@@ -1,0 +1,5 @@
+databaseChangeLog:
+  - changeSet:
+      id: 001-initial-setup
+      author: vlad
+      changes: []

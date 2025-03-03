@@ -1,0 +1,13 @@
+server.port=8080
+# ============================================
+# Datasource
+# ============================================
+spring.datasource.url=jdbc:postgresql://${POSTGRES_HOST:localhost}:5432/${POSTGRES_DATABASE:task_tracker_dev}
+spring.datasource.username=${POSTGRES_USER:username}
+spring.datasource.password=${POSTGRES_PASSWORD:password}
+
+# ============================================
+# Database migrations
+# ============================================
+spring.jpa.hibernate.ddl-auto=none
+spring.liquibase.change-log=classpath:db/changelog/db.changelog-master.yaml
