@@ -1,0 +1,29 @@
+databaseChangeLog:
+  - changeSet:
+      id: 002-create-users-table
+      author: vlad
+      changes:
+        - createTable:
+            tableName: users
+            remarks: "Таблица для хранения информации о пользователях системы"
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  remarks: "Уникальный идентификатор пользователя"
+              - column:
+                  name: username
+                  type: varchar(50)
+                  constraints:
+                    nullable: false
+                    unique: true
+                  remarks: "Имя пользователя, используемое для входа в систему"
+              - column:
+                  name: password
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                  remarks: "Хэшированный пароль пользователя (например, BCrypt)"
