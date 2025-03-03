@@ -1,7 +1,7 @@
 package com.tasktracker.backend.controller;
 
-import com.tasktracker.backend.dto.auth.RegisterRequest;
-import com.tasktracker.backend.service.UserService;
+import com.tasktracker.backend.dto.auth.LoginRequest;
+import com.tasktracker.backend.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
@@ -11,15 +11,15 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
-@RequestMapping("/api/user")  // TODO подумать вынести /api в абстрактный базовый класс ApiController
+@RequestMapping("/api/auth")
 @RequiredArgsConstructor
-public class UserController {
+public class AuthController {
 
-    private final UserService userService;
+    private final AuthService authService;
 
-    @PostMapping()
-    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest registerRequest) {
-        userService.register(registerRequest);
+    @PostMapping("/login")
+    public ResponseEntity<String> login(@Valid @RequestBody LoginRequest loginRequest) {
+        authService.authenticate(loginRequest);
         return ResponseEntity.ok("OK");
     }
 }
