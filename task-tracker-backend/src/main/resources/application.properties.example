@@ -11,3 +11,8 @@ spring.datasource.password=${POSTGRES_PASSWORD:password}
 # ============================================
 spring.jpa.hibernate.ddl-auto=none
 spring.liquibase.change-log=classpath:db/changelog/db.changelog-master.yaml
+
+# ============================================
+# Logging
+# ============================================
+logging.level.com.tasktracker.backend=INFO

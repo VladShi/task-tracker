@@ -1,5 +1,7 @@
 package com.tasktracker.backend.exception;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,9 +13,11 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    private static final Logger log = LoggerFactory.getLogger(GlobalExceptionHandler.class);
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorMessageResponse> handleValidationException(MethodArgumentNotValidException ex) {
-        String errorMessage = ex.getBindingResult().getAllErrors().getLast().getDefaultMessage();
+        String errorMessage = ex.getBindingResult().getAllErrors().getFirst().getDefaultMessage();
         return ResponseEntity
                 .status(HttpStatus.BAD_REQUEST)  // 400
                 .body(new ErrorMessageResponse(errorMessage));
@@ -30,18 +34,16 @@ public class GlobalExceptionHandler {
 
     @ExceptionHandler(BadCredentialsException.class)
     public ResponseEntity<ErrorMessageResponse> handleBadCredentialsException(BadCredentialsException ignoredEx) {
-        String errorMessage = "Invalid login or password";
         return ResponseEntity
                 .status(HttpStatus.UNAUTHORIZED)  // 401
-                .body(new ErrorMessageResponse(errorMessage));
+                .body(new ErrorMessageResponse("Invalid login or password"));
     }
 
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorMessageResponse> handleException(Exception ex) {
-        String errorMessage = "Internal server error";
-        ex.printStackTrace();  // TODO Заменить на логирование
+    public ResponseEntity<ErrorMessageResponse> UnexpectedException(Exception ex) {
+        log.error("Unexpected error occurred", ex);
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
-                .body(new ErrorMessageResponse(errorMessage));
+                .body(new ErrorMessageResponse("Internal server error"));
     }
 }
