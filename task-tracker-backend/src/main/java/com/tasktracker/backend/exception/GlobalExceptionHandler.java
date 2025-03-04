@@ -2,7 +2,6 @@ package com.tasktracker.backend.exception;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.dao.DataIntegrityViolationException;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.authentication.BadCredentialsException;
@@ -23,13 +22,12 @@ public class GlobalExceptionHandler {
                 .body(new ErrorMessageResponse(errorMessage));
     }
 
-    @ExceptionHandler(DataIntegrityViolationException.class)
-    public ResponseEntity<ErrorMessageResponse> handleDataIntegrityViolationException(
-            DataIntegrityViolationException ignoredEx) {
-        String errorMessage = "This email is already taken";  // TODO либо проверять причину ошибки либо сделать кастомное исключение
+    @ExceptionHandler(UsernameAlreadyTakenException.class)
+    public ResponseEntity<ErrorMessageResponse> handleUsernameAlreadyTakenException(
+            UsernameAlreadyTakenException ex) {
         return ResponseEntity
                 .status(HttpStatus.CONFLICT)  // 409
-                .body(new ErrorMessageResponse(errorMessage));
+                .body(new ErrorMessageResponse(ex.getMessage()));
     }
 
     @ExceptionHandler(BadCredentialsException.class)
