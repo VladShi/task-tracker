@@ -4,6 +4,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
@@ -37,8 +38,16 @@ public class GlobalExceptionHandler {
                 .body(new ErrorMessageResponse("Invalid login or password"));
     }
 
+    @ExceptionHandler(HttpMessageNotReadableException.class)
+    public ResponseEntity<ErrorMessageResponse> handleJsonParseException(HttpMessageNotReadableException ex) {
+        log.warn("Failed to parse JSON request: {}", ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST)  // 400
+                .body(new ErrorMessageResponse("Invalid JSON format"));
+    }
+
     @ExceptionHandler(Exception.class)
-    public ResponseEntity<ErrorMessageResponse> UnexpectedException(Exception ex) {
+    public ResponseEntity<ErrorMessageResponse> handleUnexpectedException(Exception ex) {
         log.error("Unexpected error occurred", ex);
         return ResponseEntity
                 .status(HttpStatus.INTERNAL_SERVER_ERROR)
