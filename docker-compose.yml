@@ -42,6 +42,9 @@ services:
 #      - POSTGRES_USER=${POSTGRES_USER}
 #      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
 #      - POSTGRES_DATABASE=${POSTGRES_DATABASE}
+#      - JWT_SECRET=${JWT_SECRET}
+#      - JWT_ISSUER_URI=${JWT_ISSUER_URI}
+#      - JWT_EXPIRATION_SECONDS=${JWT_EXPIRATION_SECONDS}
 #    depends_on:
 #      - postgres
 #    restart: unless-stopped

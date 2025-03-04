@@ -16,3 +16,10 @@ spring.liquibase.change-log=classpath:db/changelog/db.changelog-master.yaml
 # Logging
 # ============================================
 logging.level.com.tasktracker.backend=INFO
+
+# ============================================
+# JWT
+# ============================================
+jwt.secret=${JWT_SECRET:defaultSecretKeyThatIsLongEnoughAndMustBeReplaced}
+spring.security.oauth2.resourceserver.jwt.issuer-uri=${JWT_ISSUER_URI:http://localhost:8080}
+jwt.expiration-seconds=${JWT_EXPIRATION_SECONDS:1800}
