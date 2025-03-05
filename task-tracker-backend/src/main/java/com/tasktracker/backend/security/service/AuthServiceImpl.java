@@ -38,7 +38,7 @@ public class AuthServiceImpl implements AuthService {
                 .subject(auth.getName())
                 .issuedAt(Instant.now())
                 .expiresAt(Instant.now().plusSeconds(expirationSeconds))
-                .claim("id", userDetails.getId())
+                .claim("userId", userDetails.getId())
                 .build();
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
     }
