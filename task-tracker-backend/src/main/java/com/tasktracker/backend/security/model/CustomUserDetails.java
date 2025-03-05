@@ -1,5 +1,6 @@
 package com.tasktracker.backend.security.model;
 
+import com.tasktracker.backend.entity.User;
 import org.springframework.security.core.GrantedAuthority;
 
 import java.util.Collection;
@@ -8,12 +9,9 @@ public class CustomUserDetails extends org.springframework.security.core.userdet
 
     private final Long id;
 
-    public CustomUserDetails(Long id,
-                             String username,
-                             String password,
-                             Collection<? extends GrantedAuthority> authorities) {
-        super(username, password, authorities);
-        this.id = id;
+    public CustomUserDetails(User user, Collection<? extends GrantedAuthority> authorities) {
+        super(user.getUsername(), user.getPassword(), authorities);
+        this.id = user.getId();
     }
 
     public Long getId() {

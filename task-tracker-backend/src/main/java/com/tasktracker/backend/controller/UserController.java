@@ -5,6 +5,7 @@ import com.tasktracker.backend.dto.RegisterRequest;
 import com.tasktracker.backend.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
@@ -19,8 +20,10 @@ public class UserController {
 
     @PostMapping()
     public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest registerRequest) {
-        userService.register(registerRequest);
-        return ResponseEntity.ok("OK");
+        String jwtToken = userService.register(registerRequest);
+        return ResponseEntity.ok()
+                .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
+                .body("OK");
     }
 
     @GetMapping()

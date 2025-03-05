@@ -33,9 +33,14 @@ public class AuthServiceImpl implements AuthService {
                 new UsernamePasswordAuthenticationToken(loginRequest.login(), loginRequest.password())
         );
         CustomUserDetails userDetails = (CustomUserDetails) auth.getPrincipal();
+        return generateToken(userDetails);
+    }
+
+    @Override  // Можно будет вынести в TokenService, если добавиться ещё что-то, например refresh-токены
+    public String generateToken(CustomUserDetails userDetails) {
         JwtClaimsSet claims = JwtClaimsSet.builder()
                 .issuer(issuer)
-                .subject(auth.getName())
+                .subject(userDetails.getUsername())
                 .issuedAt(Instant.now())
                 .expiresAt(Instant.now().plusSeconds(expirationSeconds))
                 .claim("userId", userDetails.getId())

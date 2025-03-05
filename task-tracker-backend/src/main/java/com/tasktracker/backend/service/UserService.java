@@ -4,6 +4,6 @@ import com.tasktracker.backend.dto.RegisterRequest;
 
 public interface UserService {
 
-    void register(RegisterRequest registerRequest);
+    String register(RegisterRequest registerRequest);
 
 }
