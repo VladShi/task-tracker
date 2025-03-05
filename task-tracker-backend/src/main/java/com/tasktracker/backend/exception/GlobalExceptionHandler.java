@@ -2,13 +2,20 @@ package com.tasktracker.backend.exception;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.http.HttpHeaders;
+import org.springframework.http.HttpMethod;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.http.converter.HttpMessageNotReadableException;
 import org.springframework.security.authentication.BadCredentialsException;
+import org.springframework.web.HttpRequestMethodNotSupportedException;
 import org.springframework.web.bind.MethodArgumentNotValidException;
 import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RestControllerAdvice;
+import org.springframework.web.servlet.resource.NoResourceFoundException;
+
+import java.util.Optional;
+import java.util.stream.Collectors;
 
 @RestControllerAdvice
 public class GlobalExceptionHandler {
@@ -46,11 +53,29 @@ public class GlobalExceptionHandler {
                 .body(new ErrorMessageResponse("Invalid JSON format"));
     }
 
+    @ExceptionHandler(NoResourceFoundException.class)
+    public ResponseEntity<ErrorMessageResponse> handleNoResourceFound(NoResourceFoundException ignoredEx) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)  // 404
+                .body(new ErrorMessageResponse("Resource not found"));
+    }
+
+    @ExceptionHandler(HttpRequestMethodNotSupportedException.class)
+    public ResponseEntity<ErrorMessageResponse> handleMethodNotSupported(HttpRequestMethodNotSupportedException ex) {
+        String allowHeader = Optional.ofNullable(ex.getSupportedHttpMethods())
+                .map(methods -> methods.stream().map(HttpMethod::name).collect(Collectors.joining(", ")))
+                .orElse("");
+        return ResponseEntity
+                .status(HttpStatus.METHOD_NOT_ALLOWED)  // 405
+                .header(HttpHeaders.ALLOW, allowHeader)
+                .body(new ErrorMessageResponse("Method not allowed"));
+    }
+
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorMessageResponse> handleUnexpectedException(Exception ex) {
         log.error("Unexpected error occurred", ex);
         return ResponseEntity
-                .status(HttpStatus.INTERNAL_SERVER_ERROR)
+                .status(HttpStatus.INTERNAL_SERVER_ERROR)  // 500
                 .body(new ErrorMessageResponse("Internal server error"));
     }
 }
