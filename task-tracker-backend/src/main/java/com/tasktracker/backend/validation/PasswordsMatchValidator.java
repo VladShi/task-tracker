@@ -1,6 +1,6 @@
 package com.tasktracker.backend.validation;
 
-import com.tasktracker.backend.dto.auth.RegisterRequest;
+import com.tasktracker.backend.dto.RegisterRequest;
 import jakarta.validation.ConstraintValidator;
 import jakarta.validation.ConstraintValidatorContext;
 

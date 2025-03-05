@@ -1,6 +1,6 @@
 package com.tasktracker.backend.mapper;
 
-import com.tasktracker.backend.dto.auth.RegisterRequest;
+import com.tasktracker.backend.dto.RegisterRequest;
 import com.tasktracker.backend.entity.User;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;

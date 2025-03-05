@@ -1,6 +1,6 @@
 package com.tasktracker.backend.service;
 
-import com.tasktracker.backend.dto.auth.RegisterRequest;
+import com.tasktracker.backend.dto.RegisterRequest;
 import com.tasktracker.backend.entity.User;
 import com.tasktracker.backend.exception.UsernameAlreadyTakenException;
 import com.tasktracker.backend.mapper.UserMapper;

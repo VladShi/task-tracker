@@ -1,7 +1,7 @@
 package com.tasktracker.backend.controller;
 
 import com.tasktracker.backend.dto.UserInfoResponse;
-import com.tasktracker.backend.dto.auth.RegisterRequest;
+import com.tasktracker.backend.dto.RegisterRequest;
 import com.tasktracker.backend.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
