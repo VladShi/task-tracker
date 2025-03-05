@@ -2,7 +2,7 @@ package com.tasktracker.backend.security.service;
 
 import com.tasktracker.backend.entity.User;
 import com.tasktracker.backend.repository.UserRepository;
-import com.tasktracker.backend.security.CustomUserDetails;
+import com.tasktracker.backend.security.model.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;

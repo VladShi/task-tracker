@@ -1,7 +1,7 @@
 package com.tasktracker.backend.security.service;
 
 import com.tasktracker.backend.dto.auth.LoginRequest;
-import com.tasktracker.backend.security.CustomUserDetails;
+import com.tasktracker.backend.security.model.CustomUserDetails;
 import lombok.RequiredArgsConstructor;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;

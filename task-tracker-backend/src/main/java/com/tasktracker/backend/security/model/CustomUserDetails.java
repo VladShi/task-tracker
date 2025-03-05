@@ -1,4 +1,4 @@
-package com.tasktracker.backend.security;
+package com.tasktracker.backend.security.model;
 
 import org.springframework.security.core.GrantedAuthority;
 
