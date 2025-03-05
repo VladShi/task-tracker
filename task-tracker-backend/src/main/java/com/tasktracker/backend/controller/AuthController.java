@@ -1,7 +1,7 @@
 package com.tasktracker.backend.controller;
 
 import com.tasktracker.backend.dto.auth.LoginRequest;
-import com.tasktracker.backend.service.AuthService;
+import com.tasktracker.backend.security.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;

@@ -1,4 +1,4 @@
-package com.tasktracker.backend.service;
+package com.tasktracker.backend.security.service;
 
 import com.tasktracker.backend.dto.auth.LoginRequest;
 import com.tasktracker.backend.security.CustomUserDetails;
