@@ -53,6 +53,14 @@ public class GlobalExceptionHandler {
                 .body(new ErrorMessageResponse("Invalid JSON format"));
     }
 
+    @ExceptionHandler(JwtProcessingException.class)
+    public ResponseEntity<ErrorMessageResponse> handleJwtProcessingException(JwtProcessingException ex) {
+        log.warn("Failed to parse JWT request: {}", ex.getMessage());
+        return ResponseEntity
+                .status(HttpStatus.BAD_REQUEST).  // 400
+                body(new ErrorMessageResponse("Failed to parse JWT. " + ex.getMessage()));
+    }
+
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<ErrorMessageResponse> handleNoResourceFound(NoResourceFoundException ignoredEx) {
         return ResponseEntity

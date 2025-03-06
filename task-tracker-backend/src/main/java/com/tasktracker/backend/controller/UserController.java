@@ -2,6 +2,7 @@ package com.tasktracker.backend.controller;
 
 import com.tasktracker.backend.dto.UserInfoResponse;
 import com.tasktracker.backend.dto.RegisterRequest;
+import com.tasktracker.backend.security.service.JwtService;
 import com.tasktracker.backend.service.UserService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -17,6 +18,7 @@ import org.springframework.web.bind.annotation.*;
 public class UserController {
 
     private final UserService userService;
+    private final JwtService jwtService;
 
     @PostMapping()
     public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest registerRequest) {
@@ -28,6 +30,10 @@ public class UserController {
 
     @GetMapping()
     public ResponseEntity<UserInfoResponse> getCurrentUser(@AuthenticationPrincipal Jwt jwt) {
-        return ResponseEntity.ok(new UserInfoResponse(jwt.getClaim("userId"), jwt.getSubject()));
+        return ResponseEntity.ok(
+                new UserInfoResponse(
+                        jwtService.extractUserId(jwt),
+                        jwt.getSubject()
+                ));
     }
 }

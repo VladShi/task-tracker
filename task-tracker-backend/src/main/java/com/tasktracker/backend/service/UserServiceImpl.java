@@ -6,7 +6,7 @@ import com.tasktracker.backend.exception.UsernameAlreadyTakenException;
 import com.tasktracker.backend.mapper.UserMapper;
 import com.tasktracker.backend.repository.UserRepository;
 import com.tasktracker.backend.security.model.CustomUserDetails;
-import com.tasktracker.backend.security.service.AuthService;
+import com.tasktracker.backend.security.service.JwtService;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -22,7 +22,7 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
-    private final AuthService authService;
+    private final JwtService jwtService;
 
     @Override
     public String register(RegisterRequest registerRequest) {
@@ -32,7 +32,7 @@ public class UserServiceImpl implements UserService {
             User savedUser = userRepository.save(user);
 
             CustomUserDetails userDetails = new CustomUserDetails(savedUser, new ArrayList<>());
-            return authService.generateToken(userDetails);
+            return jwtService.generateToken(userDetails);
 
         } catch (DataIntegrityViolationException e) {
             if (e.getCause() instanceof ConstraintViolationException) {
