@@ -44,6 +44,12 @@ build/
 .vscode/
 /.vscode/
 
+# Frontend-specific
+node_modules/
+dist/
+*.min.js
+*.min.css
+
 # Created by https://www.toptal.com/developers/gitignore/api/java,windows,linux,intellij+iml,maven
 # Edit at https://www.toptal.com/developers/gitignore?templates=java,windows,linux,intellij+iml,maven
 

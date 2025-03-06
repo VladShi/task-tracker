@@ -23,3 +23,8 @@ logging.level.com.tasktracker.backend=INFO
 jwt.secret=${JWT_SECRET:defaultSecretKeyThatIsLongEnoughAndMustBeReplaced}
 spring.security.oauth2.resourceserver.jwt.issuer-uri=${JWT_ISSUER_URI:http://localhost:8080}
 jwt.expiration-seconds=${JWT_EXPIRATION_SECONDS:1800}
+
+# ============================================
+# Other
+# ============================================
+spring.security.config.frontend.url=${FRONTEND_URL:http://localhost:63342}

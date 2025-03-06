@@ -18,9 +18,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.oauth2.jwt.*;
 import org.springframework.security.web.SecurityFilterChain;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
 import javax.crypto.spec.SecretKeySpec;
+import java.util.Arrays;
 import java.util.Collections;
+import java.util.List;
 
 @Configuration
 @EnableWebSecurity
@@ -28,15 +33,19 @@ public class SecurityConfig {
 
     private final String jwtSecret;
     private static final JWSAlgorithm JWT_ALGORITHM = JWSAlgorithm.HS256;
+    private final String frontendUrl;
 
     @Autowired
-    public SecurityConfig(@Value("${jwt.secret}") String jwtSecret) {
+    public SecurityConfig(@Value("${jwt.secret}") String jwtSecret,
+                          @Value("${spring.security.config.frontend.url}") String FRONTEND_URL) {
         this.jwtSecret = jwtSecret;
+        this.frontendUrl = FRONTEND_URL;
     }
 
     @Bean
     public SecurityFilterChain securityFilterChain(HttpSecurity http, JwtDecoder jwtDecoder) throws Exception {
         http
+            .cors(cors -> cors.configurationSource(corsConfigurationSource()))
             .csrf(csrf -> csrf.disable())
             .sessionManagement(session -> session
                     .sessionCreationPolicy(SessionCreationPolicy.STATELESS))
@@ -78,5 +87,19 @@ public class SecurityConfig {
     public JwtDecoder jwtDecoder() {
         SecretKeySpec secretKey = new SecretKeySpec(jwtSecret.getBytes(), JWT_ALGORITHM.getName());
         return NimbusJwtDecoder.withSecretKey(secretKey).build();
+    }
+
+    @Bean
+    public CorsConfigurationSource corsConfigurationSource() {
+        CorsConfiguration configuration = new CorsConfiguration();
+        configuration.setAllowedOrigins(List.of(frontendUrl));
+        configuration.setAllowedMethods(Arrays.asList("GET", "POST", "OPTIONS"));
+        configuration.setAllowedHeaders(List.of("*"));
+        configuration.setExposedHeaders(List.of("Authorization"));
+//        configuration.setAllowCredentials(true); // Если нужны куки или авторизация
+
+        UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
+        source.registerCorsConfiguration("/**", configuration); // Применяем ко всем путям
+        return source;
     }
 }

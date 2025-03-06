@@ -19,6 +19,10 @@ services:
 #  task-tracker-email-sender:
 #    profiles:
 #      - disabled
+#
+#  task-tracker-frontend:
+#    profiles:
+#      - disabled
 
 volumes:
   postgres_data_dev:

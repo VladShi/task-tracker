@@ -45,6 +45,7 @@ services:
 #      - JWT_SECRET=${JWT_SECRET}
 #      - JWT_ISSUER_URI=${JWT_ISSUER_URI}
 #      - JWT_EXPIRATION_SECONDS=${JWT_EXPIRATION_SECONDS}
+#      - FRONTEND_URL=${FRONTEND_URL}
 #    depends_on:
 #      - postgres
 #    restart: unless-stopped
@@ -60,6 +61,13 @@ services:
 #    ports:
 #      - "8082:8082"
 #    restart: unless-stopped
+#
+#  task-tracker-frontend:
+#    build: ./task-tracker-frontend
+#    ports:
+#      - "80:80"
+#    environment:
+#    - BACKEND_URL=${BACKEND_URL}
 
 volumes:
   postgres_data_prod:

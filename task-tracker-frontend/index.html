@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Task Tracker</title>
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/config.js"></script>
+    <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
+    <script src="js/auth.js"></script>
+    <script src="js/user.js"></script>
+    <script src="js/scripts.js"></script>
+</head>
+<body>
+<header>
+    <div class="container">
+        <h1>Task Tracker</h1>
+        <nav>
+            <a href="#register-modal"><button id="register-btn">Register</button></a>
+            <a href="#login-modal"><button id="login-btn">Login</button></a>
+        </nav>
+    </div>
+</header>
+<main>
+    <div class="container">
+        <div class="success-message"></div> <!-- Новый контейнер -->
+        <p>Welcome! Please register or log in.</p>
+    </div>
+</main>
+
+<!-- Registration modal -->
+<div id="register-modal" class="modal">
+    <div class="modal-content">
+        <a href="#" class="close-btn">×</a>
+        <h2>Register</h2>
+        <div class="message"></div> <!-- Переместили сюда -->
+        <form>
+            <label for="reg-email">Email:</label>
+            <input type="email" id="reg-email" name="email" required>
+
+            <label for="reg-password">Password:</label>
+            <input type="password" id="reg-password" name="password" required>
+
+            <label for="reg-confirm-password">Confirm Password:</label>
+            <input type="password" id="reg-confirm-password" name="confirmPassword" required>
+
+            <button type="submit">Register</button>
+        </form>
+    </div>
+</div>
+
+<!-- Login modal -->
+<div id="login-modal" class="modal">
+    <div class="modal-content">
+        <a href="#" class="close-btn">×</a>
+        <h2>Login</h2>
+        <div class="message"></div> <!-- Переместили сюда -->
+        <form>
+            <label for="login-email">Email:</label>
+            <input type="email" id="login-email" name="email" required>
+
+            <label for="login-password">Password:</label>
+            <input type="password" id="login-password" name="password" required>
+
+            <button type="submit">Login</button>
+        </form>
+    </div>
+</div>
+
+<div class="notification"></div>
+
+</body>
+</html>
