@@ -1,4 +1,24 @@
-/* Общие стили */
+/* === Переменные === */
+:root {
+  --color-bg-base: #1e1e1e;       /* Основной фон */
+  --color-bg-dark: #2c2c2c;       /* Вторичный фон (модалки, шапка) */
+  --color-text-base: #e0e0e0;     /* Основной текст */
+  --color-text-hover: #ffffff;    /* Текст при наведении */
+  --color-border: #444444;        /* Границы */
+  --color-primary: #005abb;       /* Основной акцент (кнопки) */
+  --color-primary-hover: #006adc; /* Акцент при наведении */
+  --color-error: #a52b30;         /* Ошибки */
+  --color-error-hover: #c21f30;   /* Ошибки при наведении */
+  --color-success: #167f37;       /* Успех */
+  --spacing-sm: 5px;              /* Малый отступ */
+  --spacing-md: 10px;             /* Средний отступ */
+  --spacing-lg: 20px;             /* Большой отступ */
+  --shadow-base: 0 2px 4px rgba(0, 0, 0, 0.3); /* Базовая тень */
+  --shadow-hover: 0 4px 8px rgba(0, 0, 0, 0.4); /* Тень при наведении */
+  --shadow-notification: 1px 3px 8px rgb(145 145 145 / 60%); /* Тень для уведомлений */
+}
+
+/* === Базовые стили === */
 * {
   margin: 0;
   padding: 0;
@@ -7,55 +27,95 @@
 
 body {
   font-family: Arial, sans-serif;
-  background-color: #1e1e1e;
-  color: #e0e0e0;
+  background-color: var(--color-bg-base);
+  color: var(--color-text-base);
   line-height: 1.6;
 }
 
+/* === Макеты === */
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: 20px;
+  padding: var(--spacing-lg);
 }
 
-header {
-  background-color: #2c2c2c;
-  padding: 5px 0;
-  border-bottom: 1px solid #444;
+/* === Компоненты === */
+/* Header */
+.header {
+  background-color: var(--color-bg-dark);
+  padding: var(--spacing-sm) 0;
+  border-bottom: 1px solid var(--color-border);
+  box-shadow: var(--shadow-base);
 }
 
-header h1 {
+.header .container {
+  display: flex; /* Переносим flex в контейнер */
+  align-items: center; /* Выравнивание по вертикали */
+  justify-content: space-between; /* Распределяем пространство */
+}
+
+.header__title {
   display: inline-block;
-  font-size: 20px;
+  font-size: 26px;
+  letter-spacing: 1.5px;
+  font-weight: 700;
+  text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.8), 2px 2px 6px rgba(255, 255, 255, 0.2);
 }
 
-header nav {
-  float: right;
+.header__nav {
+  display: flex;
+  align-items: center;
+  gap: var(--spacing-md);
 }
 
-header button {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  margin-left: 10px;
-  cursor: pointer;
+/* Button */
+.btn {
+  border: 1px solid;
+  border-color: rgba(255, 255, 255, 0.1) rgba(0, 0, 0, 0.5) rgba(0, 0, 0, 0.5) rgba(255, 255, 255, 0.1);
+  padding: var(--spacing-md) var(--spacing-lg);
   border-radius: 5px;
   font-size: 16px;
+  font-weight: 600;
+  letter-spacing: 0.5px;
+  cursor: pointer;
+  color: var(--color-text-base);
+  min-width: 120px;
+  text-align: center;
+  box-shadow: var(--shadow-base);
+  transition: transform 0.2s, box-shadow 0.2s;
 }
 
-header button:hover {
-  background-color: #0056b3;
+.btn:hover {
+  transform: translateY(-1px);
+  box-shadow: var(--shadow-hover);
 }
 
-main {
-  padding: 20px 0;
+.btn--primary {
+  background-color: var(--color-primary);
 }
 
-main p {
+.btn--primary:hover {
+  background-color: var(--color-primary-hover);
+}
+
+.btn--error {
+  background-color: var(--color-error);
+}
+
+.btn--error:hover {
+  background-color: var(--color-error-hover);
+}
+
+/* Main */
+.main {
+  padding: var(--spacing-lg) 0;
+}
+
+.main__welcome {
   font-size: 18px;
 }
 
+/* Modal */
 .modal {
   display: none;
   position: fixed;
@@ -70,114 +130,94 @@ main p {
   display: block;
 }
 
-.modal-content {
-  background-color: #2c2c2c;
+.modal__content {
+  background-color: var(--color-bg-dark);
   width: 400px;
   margin: 10% auto 25% auto;
-  padding: 20px;
+  padding: var(--spacing-lg);
   border-radius: 5px;
   position: relative;
+  box-shadow: 4px 5px 3px 1px rgb(81 81 81 / 60%), -2px -2px 4px 2px rgb(158 173 229 / 5%);
+  transform: translateY(-5px);
 }
 
-.modal-content .message {
-  margin-bottom: 5px;
-  padding: 5px 10px;
+/* Message */
+.message {
+  margin-bottom: var(--spacing-sm);
+  padding: var(--spacing-sm) var(--spacing-md);
   border-radius: 5px;
-  text-align: center;
   min-height: 62px;
+  text-align: center;
   visibility: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-.modal-content .message.error {
-  background-color: #dc3545;
-  color: #fff;
+.message--error {
+  background-color: var(--color-error);
+  color: var(--color-text-base);
   visibility: visible;
 }
 
-
-.close-btn {
-  position: absolute;
-  top: 10px;
-  right: 15px;
-  color: #e0e0e0;
-  font-size: 24px;
-  text-decoration: none;
-}
-
-.close-btn:hover {
-  color: #fff;
-}
-
-.modal-content h2 {
-  margin-bottom: 5px;
-}
-
-.modal-content form {
+/* Auth Form */
+.auth-form {
   display: flex;
   flex-direction: column;
 }
 
-.modal-content label {
-  margin-bottom: 5px;
+.auth-form__label {
+  margin-bottom: var(--spacing-sm);
 }
 
-.modal-content input {
-  margin-bottom: 15px;
-  padding: 10px;
-  border: 1px solid #444;
+.auth-form__input {
+  margin-bottom: var(--spacing-md);
+  padding: var(--spacing-md);
+  border: 1px solid var(--color-border);
   border-radius: 5px;
   background-color: #3a3a3a;
-  color: #e0e0e0;
+  color: var(--color-text-base);
+  box-shadow: inset 0 1px 3px rgba(0, 0, 0, 0.4);
 }
 
-.modal-content button {
-  background-color: #007bff;
-  color: #fff;
-  border: none;
-  padding: 10px;
-  cursor: pointer;
-  border-radius: 5px;
-}
-
-.modal-content button:hover {
-  background-color: #0056b3;
-}
-
-header nav span {
-  margin-right: 10px;
-  vertical-align: middle;
-}
-
-header nav button#logout-btn {
-  background-color: #dc3545;
-  color: #fff;
-  border: none;
-  padding: 10px 20px;
-  cursor: pointer;
-  border-radius: 5px;
-  font-size: 16px;
-}
-
-header nav button#logout-btn:hover {
-  background-color: #b02a37;
-}
-
+/* Notification */
 .notification {
   position: fixed;
-  bottom: 20px;
-  right: 20px;
+  bottom: var(--spacing-lg);
+  right: var(--spacing-lg);
   padding: 15px;
-  background-color: #28a745;
-  color: #fff;
+  background-color: var(--color-success);
+  color: var(--color-text-base);
   border-radius: 5px;
-  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.3);
+  border: 1px solid rgb(255 255 255 / 20%);
+  box-shadow: var(--shadow-notification);
   display: none;
   z-index: 1000;
 }
 
-.notification.error {
-  background-color: #dc3545;
+.notification--error {
+  background-color: var(--color-error);
+}
+
+/* Специфичные стили */
+.header__nav span {
+  margin-right: var(--spacing-md);
+  vertical-align: middle;
+}
+
+.modal__close {
+  position: absolute;
+  top: var(--spacing-md);
+  right: var(--spacing-md);
+  color: var(--color-text-base);
+  font-size: 24px;
+  text-decoration: none;
+}
+
+.modal__close:hover {
+  color: var(--color-text-hover);
+}
+
+.modal__title {
+  margin-bottom: var(--spacing-sm);
 }

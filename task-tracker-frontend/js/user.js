@@ -1,39 +1,31 @@
 function loadUserData() {
   const token = localStorage.getItem('jwt');
-  if (token) {
-    $.ajax({
-      url: Config.backendUrl + '/api/user',
-      type: 'GET',
-      headers: { 'Authorization': token },
-      success: function(data) {
-        $('header nav').html(`
-                    <span>Hello, ${data.email}!</span>
-                    <button id="logout-btn">Logout</button>
-                `);
-        $('main .container').html('<p>You are logged in. Tasks will appear here.</p>');
+  if (!token) return;
 
-        $('#logout-btn').click(function() {
-          localStorage.removeItem('jwt');
+  $.ajax({
+    url: `${Config.backendUrl}/api/user`,
+    type: 'GET',
+    headers: { 'Authorization': token },
+    success: (data) => {
+      const navHtml = `
+                <span class="header__user">${data.email}</span>
+                <button class="btn btn--error" id="logout-btn">Logout</button>
+            `;
+      $('header .header__nav').html(navHtml);
+      $('main .container').html('<p class="main__status">You are logged in. Tasks will appear here.</p>');
+
+      $('#logout-btn').click(() => {
+        localStorage.removeItem('jwt');
+        location.reload();
+      });
+    },
+    error: (xhr) => {
+      if (xhr.status === 401) {
+        localStorage.removeItem('jwt');
+        showNotification('Session expired, please log in again.', 'error', () => {
           location.reload();
         });
-      },
-      error: function(xhr) {
-        if (xhr.status === 401) {
-          localStorage.removeItem('jwt');
-          showErrorNotification('Session expired, please log in again.');
-          setTimeout(function() {
-            location.reload();
-          }, 2000);
-        }
       }
-    });
-  }
-}
-
-function showErrorNotification(message) {
-  const $notification = $('.notification');
-  $notification.text(message).addClass('error').css('opacity', 0).show().animate({ opacity: 1 }, 300);
-  setTimeout(function() {
-    $notification.fadeOut(600);
-  }, 1400);
+    }
+  });
 }

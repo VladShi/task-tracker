@@ -9,65 +9,58 @@
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <script src="js/auth.js"></script>
     <script src="js/user.js"></script>
-    <script src="js/scripts.js"></script>
+    <script src="js/utils.js"></script>
 </head>
 <body>
-<header>
+<header class="header">
     <div class="container">
-        <h1>Task Tracker</h1>
-        <nav>
-            <a href="#register-modal"><button id="register-btn">Register</button></a>
-            <a href="#login-modal"><button id="login-btn">Login</button></a>
+        <h1 class="header__title">Task Tracker</h1>
+        <nav class="header__nav">
+            <a href="#register-modal"><button class="btn btn--primary" id="register-btn">Register</button></a>
+            <a href="#login-modal"><button class="btn btn--primary" id="login-btn">Login</button></a>
         </nav>
     </div>
 </header>
-<main>
+<main class="main">
     <div class="container">
-        <div class="success-message"></div> <!-- Новый контейнер -->
-        <p>Welcome! Please register or log in.</p>
+        <p class="main__welcome">Welcome! Please register or log in.</p>
     </div>
 </main>
 
-<!-- Registration modal -->
+<!-- Registration Modal -->
 <div id="register-modal" class="modal">
-    <div class="modal-content">
-        <a href="#" class="close-btn">×</a>
-        <h2>Register</h2>
-        <div class="message"></div> <!-- Переместили сюда -->
-        <form>
-            <label for="reg-email">Email:</label>
-            <input type="email" id="reg-email" name="email" required>
-
-            <label for="reg-password">Password:</label>
-            <input type="password" id="reg-password" name="password" required>
-
-            <label for="reg-confirm-password">Confirm Password:</label>
-            <input type="password" id="reg-confirm-password" name="confirmPassword" required>
-
-            <button type="submit">Register</button>
+    <div class="modal__content">
+        <a href="#" class="modal__close">×</a>
+        <h2 class="modal__title">Register</h2>
+        <div class="message"></div>
+        <form class="auth-form" id="register-form">
+            <label class="auth-form__label" for="reg-email">Email:</label>
+            <input class="auth-form__input" type="email" id="reg-email" name="email" required>
+            <label class="auth-form__label" for="reg-password">Password:</label>
+            <input class="auth-form__input" type="password" id="reg-password" name="password" required>
+            <label class="auth-form__label" for="reg-confirm-password">Confirm Password:</label>
+            <input class="auth-form__input" type="password" id="reg-confirm-password" name="confirm-password" required>
+            <button class="btn btn--primary" type="submit">Register</button>
         </form>
     </div>
 </div>
 
-<!-- Login modal -->
+<!-- Login Modal -->
 <div id="login-modal" class="modal">
-    <div class="modal-content">
-        <a href="#" class="close-btn">×</a>
-        <h2>Login</h2>
-        <div class="message"></div> <!-- Переместили сюда -->
-        <form>
-            <label for="login-email">Email:</label>
-            <input type="email" id="login-email" name="email" required>
-
-            <label for="login-password">Password:</label>
-            <input type="password" id="login-password" name="password" required>
-
-            <button type="submit">Login</button>
+    <div class="modal__content">
+        <a href="#" class="modal__close">×</a>
+        <h2 class="modal__title">Login</h2>
+        <div class="message"></div>
+        <form class="auth-form" id="login-form">
+            <label class="auth-form__label" for="login-email">Email:</label>
+            <input class="auth-form__input" type="email" id="login-email" name="email" required>
+            <label class="auth-form__label" for="login-password">Password:</label>
+            <input class="auth-form__input" type="password" id="login-password" name="password" required>
+            <button class="btn btn--primary" type="submit">Login</button>
         </form>
     </div>
 </div>
 
 <div class="notification"></div>
-
 </body>
 </html>
