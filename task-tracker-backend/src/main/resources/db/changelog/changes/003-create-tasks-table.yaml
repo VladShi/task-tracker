@@ -1,0 +1,52 @@
+databaseChangeLog:
+  - changeSet:
+      id: 003-create-tasks-table
+      author: vlad
+      changes:
+        - createTable:
+            tableName: tasks
+            remarks: "Таблица для хранения задач пользователя"
+            columns:
+              - column:
+                  name: id
+                  type: bigint
+                  autoIncrement: true
+                  constraints:
+                    primaryKey: true
+                  remarks: "Уникальный идентификатор задачи"
+              - column:
+                  name: title
+                  type: varchar(255)
+                  constraints:
+                    nullable: false
+                  remarks: "Заголовок задачи"
+              - column:
+                  name: description
+                  type: varchar(5000)
+                  remarks: "Описание задачи"
+              - column:
+                  name: created_at
+                  type: timestamp
+                  constraints:
+                    nullable: false
+                  defaultValueComputed: CURRENT_TIMESTAMP
+                  remarks: "Время создания задачи"
+              - column:
+                  name: completed
+                  type: boolean
+                  constraints:
+                    nullable: false
+                  defaultValueBoolean: false
+                  remarks: "Задача завершена"
+              - column:
+                  name: completed_at
+                  type: timestamp
+                  remarks: "Время завершения задачи"
+              - column:
+                  name: user_id
+                  type: bigint
+                  constraints:
+                    nullable: false
+                    foreignKeyName: fk_tasks_user_id
+                    references: users(id)
+                  remarks: "Внешний ключ на таблицу users"

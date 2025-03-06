@@ -11,3 +11,6 @@ databaseChangeLog:
   - include:
       file: 002-create-users-table.yaml
       relativeToChangelogFile: true
+  - include:
+      file: 003-create-tasks-table.yaml
+      relativeToChangelogFile: true
