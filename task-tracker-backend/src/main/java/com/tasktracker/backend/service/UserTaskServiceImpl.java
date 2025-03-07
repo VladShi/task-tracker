@@ -83,4 +83,11 @@ public class UserTaskServiceImpl implements UserTaskService {
         verifyTaskOwnership(userTask, jwt);
         userTaskRepository.delete(userTask);
     }
+
+    @Override
+    public UserTaskResponse getTask(long taskId, Jwt jwt) {
+        UserTask userTask = findTaskById(taskId);
+        verifyTaskOwnership(userTask, jwt);
+        return mapper.toDto(userTask);
+    }
 }

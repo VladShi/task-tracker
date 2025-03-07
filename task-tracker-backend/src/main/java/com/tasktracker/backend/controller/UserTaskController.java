@@ -49,4 +49,10 @@ public class UserTaskController {
         return ResponseEntity.noContent().build();  // 204
     }
 
+    @GetMapping("/{taskId}")
+    public ResponseEntity<UserTaskResponse> getTask(@PathVariable("taskId") long taskId,
+                                                    @AuthenticationPrincipal Jwt jwt) {
+        UserTaskResponse response = userTaskService.getTask(taskId, jwt);
+        return ResponseEntity.ok(response);
+    }
 }
