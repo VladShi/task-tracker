@@ -61,6 +61,20 @@ public class GlobalExceptionHandler {
                 body(new ErrorMessageResponse("Failed to parse JWT. " + ex.getMessage()));
     }
 
+    @ExceptionHandler(TaskOwnershipException.class)
+    public ResponseEntity<ErrorMessageResponse> handleTaskOwnershipException(TaskOwnershipException ex) {
+        return ResponseEntity
+                .status(HttpStatus.FORBIDDEN)  // 403
+                .body(new ErrorMessageResponse(ex.getMessage()));
+    }
+
+    @ExceptionHandler(TaskNotFoundException.class)
+    public ResponseEntity<ErrorMessageResponse> handleTaskNotFoundException(TaskNotFoundException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)  // 404
+                .body(new ErrorMessageResponse(ex.getMessage()));
+    }
+
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<ErrorMessageResponse> handleNoResourceFound(NoResourceFoundException ignoredEx) {
         return ResponseEntity

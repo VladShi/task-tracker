@@ -2,6 +2,7 @@ package com.tasktracker.backend.controller;
 
 import com.tasktracker.backend.dto.UserTaskCreateRequest;
 import com.tasktracker.backend.dto.UserTaskResponse;
+import com.tasktracker.backend.dto.UserTaskUpdateRequest;
 import com.tasktracker.backend.service.UserTaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
@@ -31,5 +32,13 @@ public class UserTaskController {
                                                        @AuthenticationPrincipal Jwt jwt) {
         UserTaskResponse response = userTaskService.addTask(request, jwt);
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    @PatchMapping("/{taskId}")
+    public ResponseEntity<UserTaskResponse> updateTask(@PathVariable("taskId") long taskId,
+                                                       @Valid @RequestBody UserTaskUpdateRequest request,
+                                                       @AuthenticationPrincipal Jwt jwt) {
+        UserTaskResponse response = userTaskService.updateTask(taskId, request, jwt);
+        return ResponseEntity.ok(response);
     }
 }

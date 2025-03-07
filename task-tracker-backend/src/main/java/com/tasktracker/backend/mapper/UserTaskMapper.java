@@ -20,6 +20,7 @@ public interface UserTaskMapper {
 
     @Mapping(target = "id", ignore = true)
     @Mapping(target = "createdAt", ignore = true)
+    @Mapping(target = "completedAt", ignore = true)
     @Mapping(target = "user", ignore = true)
     void updateEntity(UserTaskUpdateRequest request, @MappingTarget UserTask userTask);
 
