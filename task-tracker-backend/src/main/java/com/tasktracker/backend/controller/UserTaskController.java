@@ -41,4 +41,12 @@ public class UserTaskController {
         UserTaskResponse response = userTaskService.updateTask(taskId, request, jwt);
         return ResponseEntity.ok(response);
     }
+
+    @DeleteMapping("/{taskId}")
+    public ResponseEntity<String> deleteTask(@PathVariable("taskId") long taskId,
+                                             @AuthenticationPrincipal Jwt jwt) {
+        userTaskService.deleteTask(taskId, jwt);
+        return ResponseEntity.noContent().build();  // 204
+    }
+
 }

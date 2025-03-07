@@ -14,4 +14,6 @@ public interface UserTaskService {
     UserTaskResponse addTask(UserTaskCreateRequest request, Jwt jwt);
 
     UserTaskResponse updateTask(long taskId, UserTaskUpdateRequest request, Jwt jwt);
+
+    void deleteTask(long taskId, Jwt jwt);
 }

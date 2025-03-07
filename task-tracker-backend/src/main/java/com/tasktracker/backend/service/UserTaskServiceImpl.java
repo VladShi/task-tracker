@@ -76,4 +76,11 @@ public class UserTaskServiceImpl implements UserTaskService {
             userTask.setCompletedAt(userTask.isCompleted() ? Instant.now() : null);
         }
     }
+
+    @Override
+    public void deleteTask(long taskId, Jwt jwt) {
+        UserTask userTask = findTaskById(taskId);
+        verifyTaskOwnership(userTask, jwt);
+        userTaskRepository.delete(userTask);
+    }
 }
