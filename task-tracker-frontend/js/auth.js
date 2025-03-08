@@ -5,6 +5,12 @@ $(document).ready(function() {
     return password && password.length >= 4 && password.length <= 20 && passwordRegex.test(password);
   }
 
+  // Проверка токена при загрузке страницы
+  const token = localStorage.getItem('jwt');
+  if (token) {
+    loadUserData();
+  }
+
   // Регистрация
   $('#register-form').submit(function(event) {
     event.preventDefault();

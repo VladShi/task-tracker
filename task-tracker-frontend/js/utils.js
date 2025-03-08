@@ -41,6 +41,3 @@ function showErrorMessage($element, message) {
       .addClass('message--error')
       .css('visibility', 'visible');
 }
-
-// Инициализация при загрузке
-loadUserData();
