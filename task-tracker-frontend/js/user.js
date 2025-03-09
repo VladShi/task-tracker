@@ -13,12 +13,14 @@ function loadUserData() {
     headers: { 'Authorization': token },
     success: (data) => {
       const navHtml = `
-                <span class="header__user">Hello, ${data.email}!</span>
+                <span class="header__user">${data.email}</span>
                 <button class="btn btn--error" id="logout-btn">Logout</button>
             `;
       $('header .header__nav').html(navHtml);
       $('main .container').html(`
-                <button class="add-task-btn" id="add-task-btn">Add New Task</button>
+                <div class="add-task-container">
+                    <button class="add-task-btn" id="add-task-btn">Add New Task</button>
+                </div>
                 <div class="tasks">
                     <div class="tasks__column tasks__column--todo">
                         <h2 class="tasks__title">To Do<span class="tasks__count"></span></h2>
@@ -55,7 +57,7 @@ function formatDate(timestamp) {
   const year = date.getFullYear();
   const hours = String(date.getHours()).padStart(2, '0');
   const minutes = String(date.getMinutes()).padStart(2, '0');
-  return `<i class="material-icons">calendar_today</i> ${day}-${month}-${year} <i class="material-icons">schedule</i> ${hours}:${minutes}`;
+  return `<span class="time"><i class="material-icons">schedule</i> ${hours}:${minutes}</span><span><i class="material-icons">calendar_today</i> ${day}-${month}-${year}</span>`;
 }
 
 function loadTasks() {
@@ -86,8 +88,8 @@ function loadTasks() {
                         <div class="task-card__title">${task.title}</div>
                         <div class="task-card__description">${task.description.slice(0, 50)}${task.description.length > 50 ? '...' : ''}</div>
                         <div class="task-card__date">${formatDate(task.createdAt)}</div>
-                        <div class="task-card__status task-card__status--complete">complete</div>
-                        <div class="task-card__delete">remove</div>
+                        <div class="task-card__status task-card__status--todo">Done <i class="material-icons">check_box_outline_blank</i></div>
+                        <div class="task-card__delete"></div>
                     </div>
                 `;
         todoList.append(cardHtml);
@@ -99,8 +101,8 @@ function loadTasks() {
                         <div class="task-card__title">${task.title}</div>
                         <div class="task-card__description">${task.description.slice(0, 50)}${task.description.length > 50 ? '...' : ''}</div>
                         <div class="task-card__date">${formatDate(task.completedAt)}</div>
-                        <div class="task-card__status task-card__status--todo">To Do</div>
-                        <div class="task-card__delete">remove</div>
+                        <div class="task-card__status task-card__status--complete">Done <i class="material-icons">check_box</i></div>
+                        <div class="task-card__delete"></div>
                     </div>
                 `;
         doneList.append(cardHtml);
@@ -163,7 +165,9 @@ function deleteTask(taskId) {
 
 function toggleTaskStatus(taskId, title, description) {
   const token = localStorage.getItem('jwt');
-  const completed = $('.task-card[data-id="' + taskId + '"]').find('.task-card__status').text() === 'complete';
+  const $statusButton = $('.task-card[data-id="' + taskId + '"]').find('.task-card__status');
+  const isCompleted = $statusButton.hasClass('task-card__status--complete'); // Проверяем текущий статус
+  const completed = !isCompleted; // Инвертируем: false -> true, true -> false
   $.ajax({
     url: `${Config.backendUrl}/api/tasks/${taskId}`,
     type: 'PATCH',

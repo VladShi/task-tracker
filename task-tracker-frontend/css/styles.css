@@ -25,7 +25,7 @@
   --color-button-todo-border: #553b10c2;
   --color-button-todo-hover: #dc9830b8;
   --color-add-task-bg: #444; /* Серая кнопка */
-  --color-add-task-text: #f5a623; /* Жёлтый текст */
+  --color-add-task-text: #dc9621; /* Жёлтый текст */
   --spacing-sm: 5px;
   --spacing-md: 10px;
   --spacing-lg: 40px; /* Увеличено вдвое */
@@ -50,10 +50,11 @@ body {
 }
 
 /* === Макеты === */
+/* Container */
 .container {
   max-width: 1200px;
   margin: 0 auto;
-  padding: var(--spacing-lg);
+  padding: var(--spacing-md);
 }
 
 /* === Компоненты === */
@@ -77,12 +78,21 @@ body {
   letter-spacing: 1.5px;
   font-weight: 700;
   text-shadow: 3px 3px 3px rgba(0, 0, 0, 0.8), 2px 2px 6px rgba(255, 255, 255, 0.2);
+  margin-right: 5px;
 }
 
 .header__nav {
   display: flex;
+  flex-wrap: wrap; /* Элементы переносятся, если не помещаются */
   align-items: center;
-  gap: var(--spacing-md);
+  gap: 8px; /* Минимальный отступ между элементами */
+  justify-content: flex-end; /* Прижимаем к правому краю */
+}
+
+.header__nav .btn {
+  width: 130px; /* Фиксированная ширина, достаточная для "Register" с padding */
+  text-align: center; /* Центрируем текст внутри кнопок */
+  flex: 0 0 auto; /* Убираем растяжение, оставляем фиксированную ширину */
 }
 
 /* Button */
@@ -123,45 +133,41 @@ body {
   background-color: var(--color-error-hover);
 }
 
-/* Add Task Button */
-.add-task-btn {
-  background-color: var(--color-add-task-bg);
-  color: var(--color-add-task-text);
-  border: 1px solid var(--color-todo-border);
-  padding: var(--spacing-md) var(--spacing-lg);
-  border-radius: 5px;
-  font-size: 20px;
-  font-weight: 600;
-  cursor: pointer;
-  transition: transform 0.2s;
-  box-shadow: 3px 3px 4px rgb(0 0 0 / 50%);
-}
-
-.add-task-btn:hover {
-  transform: translateY(-1px);
-}
-
 /* Main */
 .main {
   padding: var(--spacing-lg) 0;
 }
 
 .main__welcome {
-  font-size: 18px;
+  font-size: 24px; /* Увеличим размер текста */
+  text-align: center; /* Центрируем горизонтально */
+  margin: 10% auto; /* Центрируем вертикально с отступами */
+  max-width: 600px; /* Ограничиваем ширину текста */
+}
+
+/* Add Task Container */
+.add-task-container {
+  max-width: 1100px; /* Такая же максимальная ширина, как у .tasks */
+  margin: 0 auto; /* Центрируем */
+  margin-bottom: var(--spacing-md); /* Отступ между кнопкой и колонками */
 }
 
 /* Tasks */
 .tasks {
   display: flex;
-  gap: var(--spacing-lg);
-  margin-top: var(--spacing-lg);
+  gap: 5%; /* Относительное расстояние между колонками */
+  max-width: 1100px; /* Такая же максимальная ширина, как у .add-task-container */
+  margin: 0 auto; /* Центрируем */
 }
 
 .tasks__column {
-  flex: 1;
+  flex: 0 0 auto; /* Убираем растяжение */
   padding: var(--spacing-md);
   border-radius: 10px;
   min-height: 400px;
+  width: 500px; /* Фиксированная ширина */
+  max-width: 100%; /* Ограничиваем максимальную ширину */
+  overflow: hidden; /* Предотвращаем выход содержимого */
 }
 
 .tasks__column--todo {
@@ -208,7 +214,7 @@ body {
   display: flex;
   flex-direction: column;
   gap: var(--spacing-md);
-  max-height: calc(100px * 4 + var(--spacing-md) * 3 + 8px); /* Убрали +8px */
+  max-height: calc(110px * 4 + var(--spacing-md) * 3 + 8px); /* Увеличено до 110px для 4 карточек */
   overflow-y: auto;
   scrollbar-width: none;
   padding-bottom: 8px; /* Место для тени */
@@ -225,7 +231,10 @@ body {
   border-radius: 5px;
   box-shadow: var(--shadow-card);
   position: relative;
-  min-height: 100px;
+  min-height: 110px; /* Увеличено для избежания наложения */
+  width: 100%; /* Занимает всю ширину колонки */
+  max-width: 100%; /* Ограничиваем максимальную ширину */
+  box-sizing: border-box; /* Учитываем padding в ширине */
   transition: border-color 0.2s;
 }
 
@@ -243,20 +252,23 @@ body {
   border-color: var(--color-card-hover);
 }
 
-.task-card:hover .task-card__title {
+.task-card:hover .task-card__title{
   color: var(--color-text-hover);
 }
 
 .task-card__title {
   font-size: 20px;
   font-weight: 600;
-  word-break: break-word;
   transition: color 0.2s;
+  max-width: calc(100% - 50px); /* Ограничиваем ширину до кнопки удаления */
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .task-card__description {
   font-size: 14px;
-  max-width: 100%;
+  max-width: calc(100% - 50px); /* Ограничиваем ширину с учётом только кнопки удаления */
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
@@ -271,20 +283,68 @@ body {
   position: absolute;
   bottom: var(--spacing-sm);
   right: var(--spacing-md);
-  line-height: 16px; /* Увеличен для лучшего центрирования */
-  display: flex;
-  align-items: center; /* Выравнивание по центру с помощью flex */
+  line-height: 16px;
+  display: block; /* Убираем flex для явного контроля строк */
+  text-align: right; /* Прижимаем к правому краю */
+}
+
+.task-card__date .time {
+  display: block; /* Время в отдельной строке */
+  margin-bottom: 2px; /* Отступ между временем и датой */
 }
 
 .task-card__status,
 .task-card__delete {
-  min-width: 90px; /* Фиксированная ширина */
-  text-align: center; /* Центрирование текста */
+  position: absolute;
   border-radius: 5px;
   font-size: 14px;
-  letter-spacing: 1px;
   cursor: pointer;
   transition: color 0.2s, border-color 0.2s;
+}
+
+.task-card__delete {
+  top: var(--spacing-sm);
+  right: var(--spacing-md);
+  background-color: var(--color-button-remove-bg);
+  border: 1px solid var(--color-button-remove-border);
+  color: #ffa19194;
+  width: 40px;
+  height: 40px;
+  text-align: center;
+  line-height: 36px; /* Центрируем крестик вертикально */
+  font-size: 20px; /* Увеличим крестик */
+  position: absolute;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  z-index: 1; /* Убеждаемся, что кнопка поверх псевдоэлемента */
+}
+
+.task-card__delete:hover {
+  border-color: var(--color-button-remove-hover);
+  color: var(--color-button-remove-hover);
+}
+
+.task-card__delete::after {
+  content: "✖"; /* Крестик */
+}
+
+.task-card__status {
+  bottom: var(--spacing-sm);
+  left: var(--spacing-md);
+  min-width: 80px; /* Уменьшено с 90px */
+  text-align: center;
+  height: 36px; /* Уменьшено с 40px */
+  line-height: 36px; /* Центрируем текст и иконку */
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: absolute;
+  border-radius: 5px;
+  font-size: 14px;
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+  z-index: 1; /* Убеждаемся, что кнопка поверх псевдоэлемента */
 }
 
 .task-card__status--complete {
@@ -309,32 +369,107 @@ body {
   color: var(--color-button-todo-hover);
 }
 
-.task-card__status {
-  position: absolute;
-  bottom: var(--spacing-sm);
-  left: var(--spacing-md);
-}
-
-.task-card__delete {
-  position: absolute;
-  top: var(--spacing-sm);
-  right: var(--spacing-md);
-  background-color: var(--color-button-remove-bg);
-  border: 1px solid var(--color-button-remove-border);
-  color: #ffa19194;
-}
-
-.task-card__delete:hover {
-  border-color: var(--color-button-remove-hover);
-  color: var(--color-button-remove-hover);
-}
-
 /* Иконки для даты (Material Icons) */
 .task-card__date i.material-icons {
   margin-left: 4px;
   margin-right: 2px;
   font-size: 14px;
   vertical-align: middle;
+}
+
+/* Add Task Button */
+.add-task-btn {
+  background-color: var(--color-add-task-bg);
+  color: var(--color-add-task-text);
+  border: 1px solid var(--color-todo-border);
+  padding: var(--spacing-md) var(--spacing-lg);
+  border-radius: 5px;
+  font-size: 20px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: transform 0.2s;
+  box-shadow: 3px 3px 4px rgb(0 0 0 / 50%);
+  width: 50%; /* Половина ширины контейнера на широких экранах */
+  position: relative;
+}
+
+.add-task-btn::before {
+  content: "+"; /* Плюс перед текстом */
+  margin-right: 0.5em; /* Отступ справа */
+}
+
+.add-task-btn::after {
+  content: "+"; /* Плюс после текста */
+  margin-left: 0.5em; /* Отступ слева */
+}
+
+.add-task-btn:hover {
+  transform: translateY(-1px);
+  color: #df9f16;
+  border-color: #6c500e;
+}
+
+@media (min-width: 1100px) {
+  .add-task-btn {
+    max-width: 500px; /* Ограничение ширины для широких экранов */
+  }
+}
+
+/* Media Queries for Adaptive Design */
+@media (max-width: 1100px) {
+  .tasks {
+    flex-direction: column;
+    gap: var(--spacing-md); /* Уменьшаем расстояние между колонками на мобильных */
+    align-items: stretch; /* Колонки растягиваются на всю ширину */
+  }
+
+  .tasks__column {
+    width: 100%; /* Колонки занимают всю ширину на мобильных */
+    max-width: 90%; /* Ограничиваем ширину до 95% */
+    margin: 0 auto; /* Центрируем колонки */
+  }
+
+  .add-task-btn {
+    width: 100%; /* Кнопка занимает всю ширину на мобильных */
+    text-align: center; /* Центрируем текст внутри кнопки */
+  }
+
+  .add-task-container {
+    width: 90%;
+  }
+}
+
+@media (max-width: 800px) {
+  .tasks__column {
+    max-width: 95%; /* Увеличиваем ширину до 95% для экранов < 800px */
+  }
+  .add-task-container {
+    width: 95%;
+  }
+}
+
+/* Custom Scrollbar for Page */
+body {
+  scrollbar-width: thin; /* Для Firefox */
+  scrollbar-color: #4a4a4a #2d2d2d; /* Ползунок и фон для Firefox */
+}
+
+body::-webkit-scrollbar {
+  width: 12px; /* Ширина скроллбара */
+}
+
+body::-webkit-scrollbar-track {
+  background: #2d2d2d; /* Фон дорожки */
+}
+
+body::-webkit-scrollbar-thumb {
+  background-color: #4a4a4a; /* Цвет ползунка */
+  border-radius: 4px; /* Скругление углов */
+  border: 2px solid #2d2d2d; /* Граница для эффекта */
+}
+
+body::-webkit-scrollbar-thumb:hover {
+  background-color: #666; /* Цвет при наведении */
 }
 
 /* Modal */
