@@ -1,4 +1,3 @@
-<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -58,6 +57,43 @@
             <label class="auth-form__label" for="login-password">Password:</label>
             <input class="auth-form__input" type="password" id="login-password" name="password" required>
             <button class="btn btn--primary" type="submit">Login</button>
+        </form>
+    </div>
+</div>
+
+<!-- Add Task Modal -->
+<div id="add-task-modal" class="modal">
+    <div class="modal__content">
+        <a href="#" class="modal__close">×</a>
+        <h2 class="modal__title">Add New Task</h2>
+        <form class="task-form">
+            <label class="auth-form__label" for="add-title">Title:</label>
+            <input class="auth-form__input" type="text" id="add-title" name="title" required>
+            <label class="auth-form__label" for="add-description">Description:</label>
+            <textarea class="auth-form__input" id="add-description" name="description" rows="3" style="resize: vertical; overflow-y: auto;"></textarea>
+            <button class="btn btn--primary" id="save-new-task">Save</button>
+        </form>
+    </div>
+</div>
+
+<!-- Edit Task Modal -->
+<div id="edit-task-modal" class="modal">
+    <div class="modal__content">
+        <a href="#" class="modal__close">×</a>
+        <h2 class="modal__title">Edit Task</h2>
+        <form class="task-form">
+            <label class="auth-form__label" for="edit-title">Title:</label>
+            <input class="auth-form__input" type="text" id="edit-title" name="title" required>
+            <label class="auth-form__label" for="edit-description">Description:</label>
+            <textarea class="auth-form__input" id="edit-description" name="description" rows="3" style="resize: vertical; overflow-y: auto;"></textarea>
+            <div class="task-form__dates">
+                <label>Created:</label>
+                <span id="edit-created-at" class="task-form__date"></span>
+            </div>
+            <div class="task-form__status">
+                <div class="task-card__status" id="edit-status"></div>
+                <span id="edit-completed-at" class="task-form__date"></span>
+            </div>
         </form>
     </div>
 </div>

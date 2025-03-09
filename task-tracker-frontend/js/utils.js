@@ -2,7 +2,11 @@ $(document).ready(function() {
   // Закрытие модалок при клике вне
   $(window).click((event) => {
     if ($(event.target).hasClass('modal')) {
+      $('.modal').removeClass('modal--active').hide();
       window.location.hash = '';
+      if (typeof saveTaskIfChanged === 'function') {
+        saveTaskIfChanged(); // Сохраняем изменения при закрытии
+      }
     }
   });
 
