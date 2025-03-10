@@ -27,4 +27,4 @@ jwt.expiration-seconds=${JWT_EXPIRATION_SECONDS:1800}
 # ============================================
 # Other
 # ============================================
-spring.security.config.frontend.url=${FRONTEND_URL:http://localhost:63342}
+spring.security.config.frontend.url=${FRONTEND_URL:http://localhost}

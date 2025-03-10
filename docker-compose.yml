@@ -35,7 +35,10 @@ services:
     restart: unless-stopped
 
 #  task-tracker-backend:
-#    build: ./task-tracker-backend
+#    build:
+#      context: ./task-tracker-backend
+#      dockerfile: Dockerfile
+#    image: task-tracker-backend
 #    ports:
 #      - "8080:8080"
 #    environment:
@@ -51,23 +54,33 @@ services:
 #    restart: unless-stopped
 #
 #  task-tracker-scheduler:
-#    build: ./task-tracker-scheduler
+#    build:
+#      context: ./task-tracker-scheduler
+#      dockerfile: Dockerfile
+#    image: task-tracker-scheduler
 #    ports:
 #      - "8081:8081"
 #    restart: unless-stopped
 #
 #  task-tracker-email-sender:
-#    build: ./task-tracker-email-sender
+#    build:
+#      context: ./task-tracker-email-sender
+#      dockerfile: Dockerfile
+#    image: task-tracker-email-sender
 #    ports:
 #      - "8082:8082"
 #    restart: unless-stopped
 #
-#  task-tracker-frontend:
-#    build: ./task-tracker-frontend
-#    ports:
-#      - "80:80"
-#    environment:
-#    - BACKEND_URL=${BACKEND_URL}
+  task-tracker-frontend:
+    build:
+      context: ./task-tracker-frontend
+      dockerfile: Dockerfile
+    image: task-tracker-frontend
+    ports:
+      - "80:80"
+    environment:
+    - BACKEND_URL=${BACKEND_URL}
+    restart: unless-stopped
 
 volumes:
   postgres_data_prod:
