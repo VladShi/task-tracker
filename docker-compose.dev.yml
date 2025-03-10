@@ -8,9 +8,9 @@ services:
     volumes:
       - postgres_data_dev:/var/lib/postgresql/data
 
-#  task-tracker-backend:
-#    profiles:
-#      - disabled
+  task-tracker-backend:
+    profiles:
+      - disabled
 #
 #  task-tracker-scheduler:
 #    profiles:
