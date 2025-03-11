@@ -3,6 +3,7 @@ package com.tasktracker.backend.service;
 import com.tasktracker.backend.dto.RegisterRequest;
 import com.tasktracker.backend.entity.User;
 import com.tasktracker.backend.exception.UsernameAlreadyTakenException;
+import com.tasktracker.backend.kafka.EmailKafkaProducer;
 import com.tasktracker.backend.mapper.UserMapper;
 import com.tasktracker.backend.repository.UserRepository;
 import com.tasktracker.backend.security.model.CustomUserDetails;
@@ -23,6 +24,7 @@ public class UserServiceImpl implements UserService {
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
     private final JwtService jwtService;
+    private final EmailKafkaProducer emailKafkaProducer;
 
     @Override
     public String register(RegisterRequest registerRequest) {
@@ -32,7 +34,11 @@ public class UserServiceImpl implements UserService {
             User savedUser = userRepository.save(user);
 
             CustomUserDetails userDetails = new CustomUserDetails(savedUser, new ArrayList<>());
-            return jwtService.generateToken(userDetails);
+            String token = jwtService.generateToken(userDetails);
+
+            emailKafkaProducer.sendWelcomeEmail(userDetails.getUsername());
+
+            return token;
 
         } catch (DataIntegrityViolationException e) {
             if (e.getCause() instanceof ConstraintViolationException) {

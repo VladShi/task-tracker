@@ -28,3 +28,9 @@ jwt.expiration-seconds=${JWT_EXPIRATION_SECONDS:1800}
 # Other
 # ============================================
 spring.security.config.frontend.url=${FRONTEND_URL:http://localhost}
+
+# ============================================
+# Kafka
+# ============================================
+spring.kafka.bootstrap-servers=${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+spring.kafka.topic.email-sending=${KAFKA_TOPIC_EMAIL_SENDING:EMAIL_SENDING_TASKS}

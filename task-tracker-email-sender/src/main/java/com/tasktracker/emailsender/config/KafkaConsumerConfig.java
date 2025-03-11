@@ -31,11 +31,11 @@ public class KafkaConsumerConfig {
         props.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
         props.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
 
+        JsonDeserializer<EmailSendingRequest> jsonDeserializer =
+                new JsonDeserializer<>(EmailSendingRequest.class, false);
+        jsonDeserializer.addTrustedPackages("com.tasktracker.emailsender");
         ErrorHandlingDeserializer<EmailSendingRequest> errorHandlingDeserializer =
-                new ErrorHandlingDeserializer<>(new JsonDeserializer<>(EmailSendingRequest.class));
-        errorHandlingDeserializer.configure(Map.of(
-                JsonDeserializer.TRUSTED_PACKAGES, "com.tasktracker.emailsender"
-        ), false);
+                new ErrorHandlingDeserializer<>(jsonDeserializer);
 
         return new DefaultKafkaConsumerFactory<>(
                 props,
