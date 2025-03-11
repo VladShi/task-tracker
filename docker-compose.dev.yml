@@ -8,6 +8,10 @@ services:
     volumes:
       - postgres_data_dev:/var/lib/postgresql/data
 
+  kafka:
+    environment:
+      KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+
   task-tracker-backend:
     profiles:
       - disabled

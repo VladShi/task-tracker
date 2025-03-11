@@ -1,0 +1,19 @@
+# ============================================
+# Kafka
+# ============================================
+spring.kafka.bootstrap-servers=${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+spring.kafka.consumer.group-id=${KAFKA_GROUP_EMAIL_SENDER:email-sender-group}
+spring.kafka.topic.email-sending=${KAFKA_TOPIC_EMAIL_SENDING:EMAIL_SENDING_TASKS}
+
+# ============================================
+# SMTP server
+# ============================================
+spring.mail.host=${MAIL_HOST:smtp.sendgrid.net}
+spring.mail.port=${MAIL_PORT:587}
+spring.mail.username=${MAIL_USERNAME:fill_your_username}
+spring.mail.password=${MAIL_PASSWORD:fill_your_password}
+spring.mail.properties.mail.smtp.auth=true
+spring.mail.properties.mail.smtp.starttls.enable=true
+spring.mail.properties.mail.smtp.starttls.required=true
+
+spring.mail.verifiedemail=${MAIL_VERIFIED_EMAIL:fill_your@verified-email.tut}
