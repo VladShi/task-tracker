@@ -5,23 +5,23 @@ import com.tasktracker.emailsender.model.EmailMessage;
 import com.tasktracker.emailsender.model.EmailType;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.thymeleaf.TemplateEngine;
 import org.thymeleaf.context.Context;
+import org.thymeleaf.spring6.SpringTemplateEngine;
 
 import java.util.Map;
 
 @Service
 public class EmailCreationService {
 
-    private final TemplateEngine templateEngine;
+    private final SpringTemplateEngine templateEngine;
 
     @Autowired
-    public EmailCreationService(TemplateEngine templateEngine) {
+    public EmailCreationService(SpringTemplateEngine templateEngine) {
         this.templateEngine = templateEngine;
     }
 
     public EmailMessage create(EmailSendingRequest request) {
-        EmailType emailType = EmailType.fromType(request.type());
+        EmailType emailType = EmailType.fromString(request.type());
         Map<String, String> params = request.params();
 
         return EmailMessage.builder()

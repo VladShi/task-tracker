@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Task Report</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            line-height: 1.6;
+            color: #333;
+        }
+        .container {
+            max-width: 600px;
+            margin: 20px auto;
+            padding: 20px;
+            border: 1px solid #ddd;
+            border-radius: 5px;
+        }
+        h1 {
+            color: #2c3e50;
+        }
+        .task-list {
+            white-space: pre-line;
+            margin: 10px 0;
+            padding: 10px;
+            background-color: #f9f9f9;
+            border-left: 3px solid #3498db;
+        }
+        .no-tasks {
+            font-style: italic;
+            color: #7f8c8d;
+        }
+    </style>
+</head>
+<body>
+<div class="container">
+    <h1>Daily Task Report</h1>
+
+    <div th:if="${uncompletedTasks != null}">
+        <h2>List of your unfinished tasks:</h2>
+        <div class="task-list" th:text="${uncompletedTasks}"></div>
+    </div>
+
+    <div th:if="${completedTasks != null}">
+        <h2>List of tasks you completed yesterday:</h2>
+        <div class="task-list" th:text="${completedTasks}"></div>
+    </div>
+
+    <div th:if="${uncompletedTasks == null and completedTasks == null}" class="no-tasks">
+        You have no unfinished tasks, and yesterday you didn’t complete any tasks.
+        Maybe you’re sick or just slacking off.
+    </div>
+</div>
+</body>
+</html>

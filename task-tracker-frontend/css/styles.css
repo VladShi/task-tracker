@@ -11,7 +11,7 @@
   --color-error: #651c1f;
   --color-error-hover: #811d28;
   --color-success: #187534;
-  --color-todo-text: #f5a623; /* Тёмно-жёлтый */
+  --color-todo-text: #d9972a; /* Тёмно-жёлтый */
   --color-todo-border: #61431373;
   --color-done-text: #2e7d32; /* Тёмно-зелёный */
   --color-done-border: #35893b3b;
@@ -25,7 +25,7 @@
   --color-button-todo-border: #553b10c2;
   --color-button-todo-hover: #dc9830b8;
   --color-add-task-bg: #444; /* Серая кнопка */
-  --color-add-task-text: #dc9621; /* Жёлтый текст */
+  --color-add-task-text: #bf7f2d; /* Жёлтый текст */
   --spacing-sm: 5px;
   --spacing-md: 10px;
   --spacing-lg: 40px; /* Увеличено вдвое */
@@ -395,18 +395,18 @@ body {
 }
 
 .add-task-btn::before {
-  content: "+"; /* Плюс перед текстом */
+  content: ""; /* перед текстом */
   margin-right: 0.5em; /* Отступ справа */
 }
 
 .add-task-btn::after {
-  content: "+"; /* Плюс после текста */
+  content: ""; /* после текста */
   margin-left: 0.5em; /* Отступ слева */
 }
 
 .add-task-btn:hover {
   transform: translateY(-1px);
-  color: #df9f16;
+  color: #c18b17;
   border-color: #6c500e;
 }
 
