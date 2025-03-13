@@ -22,7 +22,7 @@ function loadUserData() {
   }
 
   $.ajax({
-    url: `${Config.backendUrl}/api/user`,
+    url: `/api/user`,
     type: 'GET',
     headers: { 'Authorization': token },
     success: (data) => {
@@ -91,7 +91,7 @@ function setupEventListeners() {
     if (!taskId) return;
     $('#edit-task-modal').data('task-id', taskId); // Устанавливаем taskId
     $.ajax({
-      url: `${Config.backendUrl}/api/tasks/${taskId}`,
+      url: `/api/tasks/${taskId}`,
       type: 'GET',
       headers: { 'Authorization': localStorage.getItem('jwt') },
       success: (task) => {
@@ -139,7 +139,7 @@ function setupEventListeners() {
     if (title || description) {
       const token = localStorage.getItem('jwt');
       $.ajax({
-        url: `${Config.backendUrl}/api/tasks`,
+        url: `/api/tasks`,
         type: 'POST',
         headers: { 'Authorization': token },
         contentType: 'application/json',
@@ -180,7 +180,7 @@ function setupEventListeners() {
 function loadTasks() {
   const token = localStorage.getItem('jwt');
   $.ajax({
-    url: `${Config.backendUrl}/api/tasks`,
+    url: `/api/tasks`,
     type: 'GET',
     headers: { 'Authorization': token },
     success: (tasks) => {
@@ -266,7 +266,7 @@ function loadTasks() {
 function deleteTask(taskId) {
   const token = localStorage.getItem('jwt');
   $.ajax({
-    url: `${Config.backendUrl}/api/tasks/${taskId}`,
+    url: `/api/tasks/${taskId}`,
     type: 'DELETE',
     headers: { 'Authorization': token },
     success: () => {
@@ -289,7 +289,7 @@ function toggleTaskStatus(taskId, title, description) {
   const isCompleted = $statusButton.hasClass('task-card__status--complete');
   const completed = !isCompleted;
   $.ajax({
-    url: `${Config.backendUrl}/api/tasks/${taskId}`,
+    url: `/api/tasks/${taskId}`,
     type: 'PATCH',
     headers: { 'Authorization': token },
     contentType: 'application/json',
@@ -328,7 +328,7 @@ function saveTask(taskId, title, description, completed) {
   if (!token || !taskId) return;
 
   $.ajax({
-    url: `${Config.backendUrl}/api/tasks/${taskId}`,
+    url: `/api/tasks/${taskId}`,
     type: 'PATCH',
     headers: { 'Authorization': token },
     contentType: 'application/json',
@@ -347,7 +347,7 @@ function updateTaskStatus(taskId, title, description, completed) {
   isUpdating = true;
   const token = localStorage.getItem('jwt');
   $.ajax({
-    url: `${Config.backendUrl}/api/tasks/${taskId}`,
+    url: `/api/tasks/${taskId}`,
     type: 'PATCH',
     headers: { 'Authorization': token },
     contentType: 'application/json',
@@ -367,28 +367,3 @@ function updateTaskStatus(taskId, title, description, completed) {
     }
   });
 }
-// function updateTaskStatus(taskId, title, description, completed) {
-//   if (isUpdating) return;
-//   isUpdating = true;
-//   const token = localStorage.getItem('jwt');
-//   $.ajax({
-//     url: `${Config.backendUrl}/api/tasks/${taskId}`,
-//     type: 'PATCH',
-//     headers: { 'Authorization': token },
-//     contentType: 'application/json',
-//     data: JSON.stringify({ title, description, completed }),
-//     success: (task) => {
-//       $('#edit-completed-at').html(task.completed ? formatDate(task.completedAt) : '');
-//       $('#edit-status').removeClass('task-card__status--complete task-card__status--todo')
-//           .addClass(task.completed ? 'task-card__status--complete' : 'task-card__status--todo')
-//           .html(`<i class="material-icons">${task.completed ? 'check_box' : 'check_box_outline_blank'}</i>`);
-//       loadTasks();
-//     },
-//     error: (xhr) => {
-//       showNotification(xhr.responseJSON?.message || 'Failed to update task status.', 'error');
-//     },
-//     complete: () => {
-//       isUpdating = false;
-//     }
-//   });
-// }

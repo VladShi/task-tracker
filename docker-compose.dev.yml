@@ -23,8 +23,12 @@ services:
   task-tracker-email-sender:
     profiles:
       - disabled
-#
-#  task-tracker-frontend:
+
+  task-tracker-frontend:
+    environment:
+      BACKEND_API_URL: http://192.168.1.31:8080/
+#    networks:
+#      - host
 #    profiles:
 #      - disabled
 

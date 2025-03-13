@@ -35,7 +35,7 @@ $(document).ready(function() {
     const data = { login: email, password, confirmPassword };
 
     $.ajax({
-      url: `${Config.backendUrl}/api/user`,
+      url: `/api/user`,
       type: 'POST',
       contentType: 'application/json',
       data: JSON.stringify(data),
@@ -71,7 +71,7 @@ $(document).ready(function() {
     const data = { login: email, password };
 
     $.ajax({
-      url: `${Config.backendUrl}/api/auth/login`,
+      url: `/api/auth/login`,
       type: 'POST',
       contentType: 'application/json',
       data: JSON.stringify(data),

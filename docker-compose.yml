@@ -35,8 +35,6 @@ services:
       context: ./task-tracker-backend
       dockerfile: Dockerfile
     image: task-tracker-backend
-    ports:
-      - "8080:8080"
     environment:
       POSTGRES_HOST: ${POSTGRES_HOST}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -45,7 +43,6 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       JWT_ISSUER_URI: ${JWT_ISSUER_URI}
       JWT_EXPIRATION_SECONDS: ${JWT_EXPIRATION_SECONDS}
-      FRONTEND_URL: ${FRONTEND_URL}
       KAFKA_BOOTSTRAP_SERVERS: ${KAFKA_BOOTSTRAP_SERVERS}
       KAFKA_TOPIC_EMAIL_SENDING: ${KAFKA_TOPIC_EMAIL_SENDING}
     depends_on:
@@ -94,7 +91,7 @@ services:
     ports:
       - "80:80"
     environment:
-      BACKEND_URL: ${BACKEND_URL}
+      BACKEND_API_URL: ${BACKEND_API_URL}
     restart: unless-stopped
 
 volumes:
