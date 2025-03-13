@@ -9,6 +9,9 @@ COPY pom.xml /app/
 # Копируем исходный код
 COPY src /app/src/
 
+# Копируем application.properties.example и переименовываем в application.properties
+COPY src/main/resources/application.properties.example /app/src/main/resources/application.properties
+
 # Собираем только task-tracker-scheduler из корневого pom.xml
 RUN mvn -f /app/pom.xml clean package -DskipTests
 
