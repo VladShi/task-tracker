@@ -1,0 +1,79 @@
+name: CD - Deploy to Server
+
+on:
+  workflow_run:
+    workflows: ["CI - Build and Push Docker Images"]
+    types:
+      - completed
+    branches:
+      - master
+  workflow_dispatch:
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    if: ${{ github.event.workflow_run.conclusion == 'success' }}
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Deploy to server
+        env:
+          SSH_PRIVATE_KEY: ${{ secrets.SSH_PRIVATE_KEY }}
+          SSH_HOST: ${{ secrets.SSH_HOST }}
+          SSH_USER: ${{ secrets.SSH_USER }}
+          POSTGRES_USER: ${{ secrets.POSTGRES_USER }}
+          POSTGRES_PASSWORD: ${{ secrets.POSTGRES_PASSWORD }}
+          POSTGRES_DATABASE: task_tracker_db
+          JWT_SECRET: ${{ secrets.JWT_SECRET }}
+          JWT_ISSUER_URI: http://localhost:8080
+          JWT_EXPIRATION_SECONDS: 1800
+          KAFKA_BOOTSTRAP_SERVERS: kafka:9092
+          KAFKA_TOPIC_EMAIL_SENDING: EMAIL_SENDING_TASKS
+          KAFKA_GROUP_EMAIL_SENDER: email-sender-group
+          MAIL_HOST: smtp.sendgrid.net
+          MAIL_PORT: 587
+          MAIL_USERNAME: ${{ secrets.MAIL_USERNAME }}
+          MAIL_PASSWORD: ${{ secrets.MAIL_PASSWORD }}
+          MAIL_VERIFIED_EMAIL: ${{ secrets.MAIL_VERIFIED_EMAIL }}
+          DOCKERHUB_USERNAME: ${{ secrets.DOCKERHUB_USERNAME }}
+        run: |
+          # Установка SSH ключа
+          echo "$SSH_PRIVATE_KEY" > private_key.pem
+          chmod 600 private_key.pem
+
+          # Создание .env файла на сервере
+          ssh -i private_key.pem $SSH_USER@$SSH_HOST << 'EOF'
+            cat > /home/$SSH_USER/.env << 'ENV'
+            BACKEND_API_URL=http://task-tracker-backend:8080/
+            POSTGRES_HOST=postgres
+            POSTGRES_USER=$POSTGRES_USER
+            POSTGRES_PASSWORD=$POSTGRES_PASSWORD
+            POSTGRES_DATABASE=$POSTGRES_DATABASE
+            JWT_SECRET=$JWT_SECRET
+            JWT_ISSUER_URI=$JWT_ISSUER_URI
+            JWT_EXPIRATION_SECONDS=$JWT_EXPIRATION_SECONDS
+            KAFKA_BOOTSTRAP_SERVERS=$KAFKA_BOOTSTRAP_SERVERS
+            KAFKA_TOPIC_EMAIL_SENDING=$KAFKA_TOPIC_EMAIL_SENDING
+            KAFKA_GROUP_EMAIL_SENDER=$KAFKA_GROUP_EMAIL_SENDER
+            MAIL_HOST=$MAIL_HOST
+            MAIL_PORT=$MAIL_PORT
+            MAIL_USERNAME=$MAIL_USERNAME
+            MAIL_PASSWORD=$MAIL_PASSWORD
+            MAIL_VERIFIED_EMAIL=$MAIL_VERIFIED_EMAIL
+            DOCKERHUB_USERNAME=$DOCKERHUB_USERNAME
+            ENV
+          EOF
+
+          # Копирование docker-compose.prod.yml на сервер
+          scp -i private_key.pem ./docker-compose.prod.yml $SSH_USER@$SSH_HOST:/home/$SSH_USER/docker-compose.yml
+
+          # Выполнение деплоя
+          ssh -i private_key.pem $SSH_USER@$SSH_HOST << 'EOF'
+            cd /home/$SSH_USER
+            docker-compose pull
+            docker-compose up -d
+          EOF
+
+          # Очистка
+          rm private_key.pem
