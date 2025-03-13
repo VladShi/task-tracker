@@ -16,13 +16,13 @@ services:
     profiles:
       - disabled
 #
-#  task-tracker-scheduler:
-#    profiles:
-#      - disabled
-#
-#  task-tracker-email-sender:
-#    profiles:
-#      - disabled
+  task-tracker-scheduler:
+    profiles:
+      - disabled
+
+  task-tracker-email-sender:
+    profiles:
+      - disabled
 #
 #  task-tracker-frontend:
 #    profiles:
