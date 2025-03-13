@@ -1,0 +1,54 @@
+name: CI - Build and Push Docker Images
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-push:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Login to Docker Hub
+        uses: docker/login-action@v3
+        with:
+          username: ${{ secrets.DOCKERHUB_USERNAME }}
+          password: ${{ secrets.DOCKERHUB_TOKEN }}
+
+      - name: Build and push task-tracker-backend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./task-tracker-backend
+          file: ./task-tracker-backend/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/task-tracker-backend:latest
+
+      - name: Build and push task-tracker-frontend
+        uses: docker/build-push-action@v5
+        with:
+          context: ./task-tracker-frontend
+          file: ./task-tracker-frontend/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/task-tracker-frontend:latest
+
+      - name: Build and push task-tracker-scheduler
+        uses: docker/build-push-action@v5
+        with:
+          context: ./task-tracker-scheduler
+          file: ./task-tracker-scheduler/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/task-tracker-scheduler:latest
+
+      - name: Build and push task-tracker-email-sender
+        uses: docker/build-push-action@v5
+        with:
+          context: ./task-tracker-email-sender
+          file: ./task-tracker-email-sender/Dockerfile
+          push: true
+          tags: ${{ secrets.DOCKERHUB_USERNAME }}/task-tracker-email-sender:latest

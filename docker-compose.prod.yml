@@ -1,5 +1,4 @@
 services:
-
   postgres:
     image: postgres:17.4
     environment:
@@ -31,10 +30,7 @@ services:
     restart: unless-stopped
 
   task-tracker-backend:
-    build:
-      context: ./task-tracker-backend
-      dockerfile: Dockerfile
-    image: task-tracker-backend
+    image: ${DOCKERHUB_USERNAME}/task-tracker-backend:latest
     environment:
       POSTGRES_HOST: ${POSTGRES_HOST}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -43,6 +39,7 @@ services:
       JWT_SECRET: ${JWT_SECRET}
       JWT_ISSUER_URI: ${JWT_ISSUER_URI}
       JWT_EXPIRATION_SECONDS: ${JWT_EXPIRATION_SECONDS}
+      FRONTEND_URL: ${FRONTEND_URL}
       KAFKA_BOOTSTRAP_SERVERS: ${KAFKA_BOOTSTRAP_SERVERS}
       KAFKA_TOPIC_EMAIL_SENDING: ${KAFKA_TOPIC_EMAIL_SENDING}
     depends_on:
@@ -51,10 +48,7 @@ services:
     restart: unless-stopped
 
   task-tracker-scheduler:
-    build:
-      context: ./task-tracker-scheduler
-      dockerfile: Dockerfile
-    image: task-tracker-scheduler
+    image: ${DOCKERHUB_USERNAME}/task-tracker-scheduler:latest
     environment:
       POSTGRES_HOST: ${POSTGRES_HOST}
       POSTGRES_USER: ${POSTGRES_USER}
@@ -68,10 +62,7 @@ services:
     restart: unless-stopped
 
   task-tracker-email-sender:
-    build:
-      context: ./task-tracker-email-sender
-      dockerfile: Dockerfile
-    image: task-tracker-email-sender
+    image: ${DOCKERHUB_USERNAME}/task-tracker-email-sender:latest
     environment:
       KAFKA_BOOTSTRAP_SERVERS: ${KAFKA_BOOTSTRAP_SERVERS}
       KAFKA_TOPIC_EMAIL_SENDING: ${KAFKA_TOPIC_EMAIL_SENDING}
@@ -86,14 +77,11 @@ services:
     restart: unless-stopped
 
   task-tracker-frontend:
-    build:
-      context: ./task-tracker-frontend
-      dockerfile: Dockerfile
-    image: task-tracker-frontend
+    image: ${DOCKERHUB_USERNAME}/task-tracker-frontend:latest
     ports:
       - "80:80"
     environment:
-      BACKEND_API_URL: ${BACKEND_API_URL}
+      BACKEND_API_URL: http://task-tracker-backend:8080/
     restart: unless-stopped
 
 volumes:
