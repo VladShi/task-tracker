@@ -43,8 +43,8 @@ jobs:
           chmod 600 private_key.pem
 
           # Создание .env файла на сервере
-          ssh -i private_key.pem -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << 'EOF'
-            cat > /home/$SSH_USER/.env << 'ENV'
+          ssh -i private_key.pem -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << EOF
+            cat > /home/$SSH_USER/.env << ENV
             BACKEND_API_URL=http://task-tracker-backend:8080/
             POSTGRES_HOST=postgres
             POSTGRES_USER=$POSTGRES_USER
@@ -69,7 +69,7 @@ jobs:
           scp -i private_key.pem -o StrictHostKeyChecking=no ./docker-compose.prod.yml $SSH_USER@$SSH_HOST:/home/$SSH_USER/docker-compose.yml
 
           # Выполнение деплоя
-          ssh -i private_key.pem -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << 'EOF'
+          ssh -i private_key.pem -o StrictHostKeyChecking=no $SSH_USER@$SSH_HOST << EOF
             cd /home/$SSH_USER
             docker-compose pull
             docker-compose up -d
