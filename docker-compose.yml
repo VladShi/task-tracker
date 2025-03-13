@@ -14,8 +14,6 @@ services:
 
   zookeeper:
     image: bitnami/zookeeper:3.9.3
-    ports:
-      - "2181:2181"
     environment:
       ZOO_ENABLE_AUTH: "no"
       ALLOW_ANONYMOUS_LOGIN: "yes"
@@ -23,8 +21,6 @@ services:
 
   kafka:
     image: bitnami/kafka:3.9.0
-    ports:
-      - "9092:9092"
     environment:
       KAFKA_CFG_ZOOKEEPER_CONNECT: zookeeper:2181
       KAFKA_CFG_LISTENERS: PLAINTEXT://:9092
@@ -68,6 +64,8 @@ services:
       POSTGRES_DATABASE: ${POSTGRES_DATABASE}
       KAFKA_BOOTSTRAP_SERVERS: ${KAFKA_BOOTSTRAP_SERVERS}
       KAFKA_TOPIC_EMAIL_SENDING: ${KAFKA_TOPIC_EMAIL_SENDING}
+    depends_on:
+      - kafka
     restart: unless-stopped
 
   task-tracker-email-sender:
@@ -84,6 +82,8 @@ services:
       MAIL_USERNAME: ${MAIL_USERNAME}
       MAIL_PASSWORD: ${MAIL_PASSWORD}
       MAIL_VERIFIED_EMAIL: ${MAIL_VERIFIED_EMAIL}
+    depends_on:
+      - kafka
     restart: unless-stopped
 
   task-tracker-frontend:
