@@ -46,7 +46,7 @@ public class UserTaskServiceImpl implements UserTaskService {
         UserTask userTask = findTaskById(taskId);
         verifyTaskOwnership(userTask, userId);
         updateTaskFromRequest(userTask, request);
-        userTask = userTaskRepository.save(userTask);
+        userTaskRepository.save(userTask);
         return mapper.toDto(userTask);
     }
 
