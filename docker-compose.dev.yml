@@ -12,12 +12,14 @@ services:
   kafka:
     environment:
       KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+    ports:
+      - "9092:9092"
     restart: on-failure
 
   task-tracker-backend:
     profiles:
       - disabled
-#
+
   task-tracker-scheduler:
     profiles:
       - disabled
