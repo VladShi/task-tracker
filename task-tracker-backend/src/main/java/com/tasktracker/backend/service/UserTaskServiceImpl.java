@@ -20,17 +20,17 @@ import java.util.List;
 public class UserTaskServiceImpl implements UserTaskService {
 
     private final UserTaskRepository userTaskRepository;
-    private final UserTaskMapper mapper;
+    private final UserTaskMapper taskMapper;
 
     @Override
-    public List<UserTaskResponse> getTasksForCurrentUser(long userId) {
+    public List<UserTaskResponse> findAllByUserId(long userId) {
         List<UserTask> userTasks = userTaskRepository.findTasksByUserId(userId);
-        return userTasks.stream().map(mapper::toDto).toList();
+        return userTasks.stream().map(taskMapper::toDto).toList();
     }
 
     @Override
-    public UserTaskResponse addTask(UserTaskCreateRequest request, long userId) {
-        UserTask userTask = mapper.toEntity(request);
+    public UserTaskResponse add(UserTaskCreateRequest request, long userId) {
+        UserTask userTask = taskMapper.toEntity(request);
 
         userTask.setUser(new User(userId));
         userTask.setCreatedAt(Instant.now());
@@ -38,16 +38,16 @@ public class UserTaskServiceImpl implements UserTaskService {
 
         userTaskRepository.save(userTask);
 
-        return mapper.toDto(userTask);
+        return taskMapper.toDto(userTask);
     }
 
     @Override
-    public UserTaskResponse updateTask(long taskId, UserTaskUpdateRequest request, long userId) {
+    public UserTaskResponse update(long taskId, UserTaskUpdateRequest request, long userId) {
         UserTask userTask = findTaskById(taskId);
         verifyTaskOwnership(userTask, userId);
         updateTaskFromRequest(userTask, request);
         userTaskRepository.save(userTask);
-        return mapper.toDto(userTask);
+        return taskMapper.toDto(userTask);
     }
 
     private UserTask findTaskById(long id) {
@@ -64,23 +64,23 @@ public class UserTaskServiceImpl implements UserTaskService {
 
     private void updateTaskFromRequest(UserTask userTask, UserTaskUpdateRequest request) {
         boolean isStatusChanged = userTask.isCompleted() != request.completed();
-        mapper.updateEntity(request, userTask);
+        taskMapper.updateEntity(request, userTask);
         if (isStatusChanged) {
             userTask.setCompletedAt(userTask.isCompleted() ? Instant.now() : null);
         }
     }
 
     @Override
-    public void deleteTask(long taskId, long userId) {
+    public void delete(long taskId, long userId) {
         UserTask userTask = findTaskById(taskId);
         verifyTaskOwnership(userTask, userId);
         userTaskRepository.delete(userTask);
     }
 
     @Override
-    public UserTaskResponse getTask(long taskId, long userId) {
+    public UserTaskResponse get(long taskId, long userId) {
         UserTask userTask = findTaskById(taskId);
         verifyTaskOwnership(userTask, userId);
-        return mapper.toDto(userTask);
+        return taskMapper.toDto(userTask);
     }
 }

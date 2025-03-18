@@ -8,13 +8,13 @@ import java.util.List;
 
 public interface UserTaskService {
 
-    List<UserTaskResponse> getTasksForCurrentUser(long userId);
+    List<UserTaskResponse> findAllByUserId(long userId);
 
-    UserTaskResponse addTask(UserTaskCreateRequest request, long userId);
+    UserTaskResponse add(UserTaskCreateRequest request, long userId);
 
-    UserTaskResponse updateTask(long taskId, UserTaskUpdateRequest request, long userId);
+    UserTaskResponse update(long taskId, UserTaskUpdateRequest request, long userId);
 
-    void deleteTask(long taskId, long userId);
+    void delete(long taskId, long userId);
 
-    UserTaskResponse getTask(long taskId, long userId);
+    UserTaskResponse get(long taskId, long userId);
 }
