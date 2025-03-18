@@ -5,12 +5,14 @@ services:
       POSTGRES_USER: username
       POSTGRES_PASSWORD: password
       POSTGRES_DB: task_tracker_dev
+    restart: on-failure
     volumes:
       - postgres_data_dev:/var/lib/postgresql/data
 
   kafka:
     environment:
       KAFKA_CFG_ADVERTISED_LISTENERS: PLAINTEXT://localhost:9092
+    restart: on-failure
 
   task-tracker-backend:
     profiles:
@@ -27,8 +29,7 @@ services:
   task-tracker-frontend:
     environment:
       BACKEND_API_URL: http://192.168.1.31:8080/
-#    networks:
-#      - host
+    restart: on-failure
 #    profiles:
 #      - disabled
 
