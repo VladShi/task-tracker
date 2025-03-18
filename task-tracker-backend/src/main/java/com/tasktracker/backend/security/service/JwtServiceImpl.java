@@ -1,5 +1,6 @@
 package com.tasktracker.backend.security.service;
 
+import com.tasktracker.backend.entity.User;
 import com.tasktracker.backend.exception.JwtProcessingException;
 import com.tasktracker.backend.security.model.CustomUserDetails;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -11,6 +12,7 @@ import org.springframework.security.oauth2.jwt.JwtEncoderParameters;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.ArrayList;
 
 @Service
 public class JwtServiceImpl implements JwtService {
@@ -39,6 +41,12 @@ public class JwtServiceImpl implements JwtService {
                 .claim(USER_ID_CLAIM, userDetails.getId())
                 .build();
         return jwtEncoder.encode(JwtEncoderParameters.from(claims)).getTokenValue();
+    }
+
+    @Override
+    public String generateToken(User user) {
+        CustomUserDetails userDetails = new CustomUserDetails(user, new ArrayList<>());
+        return generateToken(userDetails);
     }
 
     @Override

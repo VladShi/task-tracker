@@ -1,9 +1,10 @@
 package com.tasktracker.backend.service;
 
 import com.tasktracker.backend.dto.RegisterRequest;
+import com.tasktracker.backend.entity.User;
 
 public interface UserService {
 
-    String register(RegisterRequest registerRequest);
+    User register(RegisterRequest registerRequest);
 
 }

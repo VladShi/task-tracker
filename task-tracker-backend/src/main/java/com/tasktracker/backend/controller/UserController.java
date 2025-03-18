@@ -2,6 +2,7 @@ package com.tasktracker.backend.controller;
 
 import com.tasktracker.backend.dto.UserInfoResponse;
 import com.tasktracker.backend.dto.RegisterRequest;
+import com.tasktracker.backend.entity.User;
 import com.tasktracker.backend.security.service.JwtService;
 import com.tasktracker.backend.service.UserService;
 import jakarta.validation.Valid;
@@ -21,11 +22,15 @@ public class UserController {
     private final JwtService jwtService;
 
     @PostMapping()
-    public ResponseEntity<String> register(@Valid @RequestBody RegisterRequest registerRequest) {
-        String jwtToken = userService.register(registerRequest);
+    public ResponseEntity<UserInfoResponse> register(@Valid @RequestBody RegisterRequest registerRequest) {
+        User user = userService.register(registerRequest);
+        String jwtToken = jwtService.generateToken(user);
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
-                .build();
+                .body(new UserInfoResponse(
+                        user.getId(),
+                        user.getUsername()
+                ));
     }
 
     @GetMapping()
