@@ -36,6 +36,7 @@ public class TaskReportService {
                 EmailSendingRequest request = TaskReportGenerator.generateForUserInPeriod(user, start, end);
                 emailKafkaProducer.sendTaskReportEmail(request);
             }
+            pageNumber++;
         } while (usersReceivingTaskReportSlice.hasNext());
     }
 }
