@@ -8,6 +8,8 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 import java.util.HashMap;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.TimeUnit;
 
 @Component
 @RequiredArgsConstructor
@@ -22,16 +24,21 @@ public class EmailKafkaProducer {
     private final KafkaTemplate<String, EmailSendingRequest> kafkaTemplate;
 
     public void sendWelcomeEmail(String to) {
-        try {
-            EmailSendingRequest request = new EmailSendingRequest(
-                    to,
-                    WELCOME_EMAIL_TYPE,
-                    new HashMap<>()
-            );
-            kafkaTemplate.send(topicEmailSending, request);
-            log.info("Sent welcome email request to Kafka: {}", request);
-        } catch (Exception e) {
-            log.error("Failed to send welcome email request to Kafka for: {}", to, e);
-        }
+        EmailSendingRequest request = new EmailSendingRequest(
+                to,
+                WELCOME_EMAIL_TYPE,
+                new HashMap<>()
+        );
+
+        CompletableFuture.supplyAsync(() -> kafkaTemplate.send(topicEmailSending, request).join())
+                .orTimeout(10, TimeUnit.SECONDS)
+                .handle((result, ex) -> {
+                    if (ex != null) {
+                        log.error("Failed to send welcome email request to Kafka for: {}", to, ex.getCause());
+                    } else {
+                        log.info("Sent welcome email request to Kafka: {}", request);
+                    }
+                    return null;
+                });
     }
 }
