@@ -30,17 +30,15 @@ public class UserTaskServiceImpl implements UserTaskService {
 
     @Override
     public UserTaskResponse addTask(UserTaskCreateRequest request, long userId) {
-        UserTask userTask = createNewUserTask(request, userId);
-        userTaskRepository.save(userTask);
-        return mapper.toDto(userTask);
-    }
-
-    private UserTask createNewUserTask(UserTaskCreateRequest request, long userId) {
         UserTask userTask = mapper.toEntity(request);
+
         userTask.setUser(new User(userId));
         userTask.setCreatedAt(Instant.now());
         userTask.setCompleted(false);
-        return userTask;
+
+        userTaskRepository.save(userTask);
+
+        return mapper.toDto(userTask);
     }
 
     @Override
