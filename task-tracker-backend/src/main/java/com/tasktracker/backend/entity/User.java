@@ -1,11 +1,13 @@
 package com.tasktracker.backend.entity;
 
+import com.tasktracker.backend.kafka.listener.NewUserEventListener;
 import jakarta.persistence.*;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
 @Entity
+@EntityListeners(NewUserEventListener.class)
 @Table(name = "users")
 @Setter
 @Getter
@@ -26,4 +28,7 @@ public class User {
     public User(long id) {
         this.id = id;
     }
+
+    @Transient
+    private boolean isNew = true;
 }

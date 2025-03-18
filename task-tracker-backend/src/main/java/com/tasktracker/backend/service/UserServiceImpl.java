@@ -3,7 +3,6 @@ package com.tasktracker.backend.service;
 import com.tasktracker.backend.dto.RegisterRequest;
 import com.tasktracker.backend.entity.User;
 import com.tasktracker.backend.exception.UsernameAlreadyTakenException;
-import com.tasktracker.backend.kafka.EmailKafkaProducer;
 import com.tasktracker.backend.mapper.UserMapper;
 import com.tasktracker.backend.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
@@ -19,7 +18,6 @@ public class UserServiceImpl implements UserService {
     private final UserMapper userMapper;
     private final PasswordEncoder passwordEncoder;
     private final UserRepository userRepository;
-    private final EmailKafkaProducer emailKafkaProducer;
 
     @Override
     public User register(RegisterRequest registerRequest) {
@@ -27,9 +25,6 @@ public class UserServiceImpl implements UserService {
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         try {
             userRepository.save(user);
-
-            emailKafkaProducer.sendWelcomeEmail(user.getUsername());
-
             return user;
 
         } catch (DataIntegrityViolationException e) {
