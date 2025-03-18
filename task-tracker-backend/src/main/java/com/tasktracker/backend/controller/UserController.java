@@ -25,7 +25,7 @@ public class UserController {
         String jwtToken = userService.register(registerRequest);
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
-                .body("OK");
+                .build();
     }
 
     @GetMapping()

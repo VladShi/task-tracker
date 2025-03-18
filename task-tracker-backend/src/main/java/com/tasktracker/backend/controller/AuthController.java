@@ -20,6 +20,6 @@ public class AuthController {
         String jwtToken = authService.authenticate(loginRequest);
         return ResponseEntity.ok()
                 .header(HttpHeaders.AUTHORIZATION, "Bearer " + jwtToken)
-                .body("OK");
+                .build();
     }
 }

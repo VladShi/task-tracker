@@ -6,12 +6,12 @@ import com.tasktracker.backend.dto.UserTaskUpdateRequest;
 import com.tasktracker.backend.service.UserTaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
-import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
+import java.net.URI;
 import java.util.List;
 
 @RestController
@@ -31,7 +31,8 @@ public class UserTaskController {
     public ResponseEntity<UserTaskResponse> createTask(@Valid @RequestBody UserTaskCreateRequest request,
                                                        @AuthenticationPrincipal Jwt jwt) {
         UserTaskResponse response = userTaskService.addTask(request, jwt);
-        return ResponseEntity.status(HttpStatus.CREATED).body(response);
+        URI uri = URI.create("/tasks/%d".formatted(response.id()));
+        return ResponseEntity.created(uri).body(response);
     }
 
     @PatchMapping("/{taskId}")
