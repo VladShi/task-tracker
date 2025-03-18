@@ -290,7 +290,7 @@ function toggleTaskStatus(taskId, title, description) {
   const completed = !isCompleted;
   $.ajax({
     url: `/api/tasks/${taskId}`,
-    type: 'PATCH',
+    type: 'PUT',
     headers: { 'Authorization': token },
     contentType: 'application/json',
     data: JSON.stringify({ title, description, completed }),
@@ -329,7 +329,7 @@ function saveTask(taskId, title, description, completed) {
 
   $.ajax({
     url: `/api/tasks/${taskId}`,
-    type: 'PATCH',
+    type: 'PUT',
     headers: { 'Authorization': token },
     contentType: 'application/json',
     data: JSON.stringify({ title, description, completed }),
@@ -348,7 +348,7 @@ function updateTaskStatus(taskId, title, description, completed) {
   const token = localStorage.getItem('jwt');
   $.ajax({
     url: `/api/tasks/${taskId}`,
-    type: 'PATCH',
+    type: 'PUT',
     headers: { 'Authorization': token },
     contentType: 'application/json',
     data: JSON.stringify({ title, description, completed }),

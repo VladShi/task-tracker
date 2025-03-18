@@ -34,7 +34,7 @@ public class UserTaskController {
         return ResponseEntity.created(uri).body(response);
     }
 
-    @PatchMapping("/{taskId}")
+    @PutMapping("/{taskId}")
     public ResponseEntity<UserTaskResponse> updateTask(@PathVariable("taskId") long taskId,
                                                        @Valid @RequestBody UserTaskUpdateRequest request,
                                                        @PrincipalId long userId) {
