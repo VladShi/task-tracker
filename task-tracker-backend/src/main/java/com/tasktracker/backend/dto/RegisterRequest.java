@@ -1,9 +1,7 @@
 package com.tasktracker.backend.dto;
 
-import com.tasktracker.backend.validation.PasswordsMatch;
 import jakarta.validation.constraints.*;
 
-@PasswordsMatch
 public record RegisterRequest(
         @NotNull(message = "Login must not be null")
         @Email(message = "Login must be a well-formed email address (your_address@mail_service.com)")
@@ -18,4 +16,9 @@ public record RegisterRequest(
 
         @NotNull(message = "Password confirmation must not be null")
         String confirmPassword
-) {}
+) {
+        @AssertTrue(message = "Passwords do not match")
+        public boolean isPasswordsMatches() {
+                return password.equals(confirmPassword);
+        }
+}
