@@ -5,10 +5,12 @@ import com.tasktracker.backend.dto.UserTaskResponse;
 import com.tasktracker.backend.dto.UserTaskUpdateRequest;
 import com.tasktracker.backend.entity.User;
 import com.tasktracker.backend.entity.UserTask;
+import com.tasktracker.backend.exception.TaskDeletingException;
 import com.tasktracker.backend.exception.TaskNotFoundException;
 import com.tasktracker.backend.exception.TaskOwnershipException;
 import com.tasktracker.backend.mapper.UserTaskMapper;
 import com.tasktracker.backend.repository.UserTaskRepository;
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -71,10 +73,12 @@ public class UserTaskServiceImpl implements UserTaskService {
     }
 
     @Override
+    @Transactional
     public void delete(long taskId, long userId) {
-        UserTask userTask = findTaskById(taskId);
-        verifyTaskOwnership(userTask, userId);
-        userTaskRepository.delete(userTask);
+        int deletedCount = userTaskRepository.deleteByIdAndUserId(taskId, userId);
+        if (deletedCount == 0) {
+            throw new TaskDeletingException();
+        }
     }
 
     @Override

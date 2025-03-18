@@ -73,6 +73,13 @@ public class GlobalExceptionHandler {
                 .body(new ErrorMessageResponse(ex.getMessage()));
     }
 
+    @ExceptionHandler(TaskDeletingException.class)
+    public ResponseEntity<ErrorMessageResponse> handleTaskDeletingException(TaskDeletingException ex) {
+        return ResponseEntity
+                .status(HttpStatus.NOT_FOUND)  // 404
+                .body(new ErrorMessageResponse(ex.getMessage()));
+    }
+
     @ExceptionHandler(NoResourceFoundException.class)
     public ResponseEntity<ErrorMessageResponse> handleNoResourceFound(NoResourceFoundException ignoredEx) {
         return ResponseEntity
