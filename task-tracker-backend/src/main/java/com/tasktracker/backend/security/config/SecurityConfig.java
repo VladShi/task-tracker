@@ -32,12 +32,15 @@ public class SecurityConfig {
     private final String jwtSecret;
     private static final JWSAlgorithm JWT_ALGORITHM = JWSAlgorithm.HS256;
 //    private final String frontendUrl;
+    private final CustomAuthenticationEntryPoint customAuthenticationEntryPoint;
 
     @Autowired
-    public SecurityConfig(@Value("${jwt.secret}") String jwtSecret
+    public SecurityConfig(@Value("${jwt.secret}") String jwtSecret,
+                          CustomAuthenticationEntryPoint customAuthenticationEntryPoint
 //                          , @Value("${spring.security.config.frontend.url}") String FRONTEND_URL
     ) {
         this.jwtSecret = jwtSecret;
+        this.customAuthenticationEntryPoint = customAuthenticationEntryPoint;
 //        this.frontendUrl = FRONTEND_URL;
     }
 
@@ -55,7 +58,7 @@ public class SecurityConfig {
             )
             .oauth2ResourceServer(oauth2 -> oauth2
                     .jwt(jwt -> jwt.decoder(jwtDecoder))
-                    .authenticationEntryPoint(new CustomAuthenticationEntryPoint())
+                    .authenticationEntryPoint(customAuthenticationEntryPoint)
         );
         return http.build();
     }
