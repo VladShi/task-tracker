@@ -45,17 +45,15 @@ public class UserTaskServiceImpl implements UserTaskService {
 
     @Override
     public UserTaskResponse update(long taskId, UserTaskUpdateRequest request, long userId) {
-        UserTask userTask = findTaskById(taskId);
+        UserTask userTask = userTaskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
         verifyTaskOwnership(userTask, userId);
         updateTaskFromRequest(userTask, request);
         userTaskRepository.save(userTask);
         return taskMapper.toDto(userTask);
     }
-
-    private UserTask findTaskById(long id) {
-        return userTaskRepository.findById(id)
-                .orElseThrow(TaskNotFoundException::new);
-    }
+    // TODO что бы избавить от двойного запроса при обновлении задачи видимо надо разделить
+    //  в контроллере и сервисе изменение статуса и изменение заголовка/описания.
+    //  Скорее всего тогда отпадет и необходимость запрашивать статус перед его изменением.
 
     private void verifyTaskOwnership(UserTask userTask, long userId) {
         long taskOwnerId = userTask.getUser().getId();
@@ -83,7 +81,7 @@ public class UserTaskServiceImpl implements UserTaskService {
 
     @Override
     public UserTaskResponse get(long taskId, long userId) {
-        UserTask userTask = findTaskById(taskId);
+        UserTask userTask = userTaskRepository.findById(taskId).orElseThrow(TaskNotFoundException::new);
         verifyTaskOwnership(userTask, userId);
         return taskMapper.toDto(userTask);
     }
