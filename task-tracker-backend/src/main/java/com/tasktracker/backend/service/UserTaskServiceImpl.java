@@ -9,9 +9,7 @@ import com.tasktracker.backend.exception.TaskNotFoundException;
 import com.tasktracker.backend.exception.TaskOwnershipException;
 import com.tasktracker.backend.mapper.UserTaskMapper;
 import com.tasktracker.backend.repository.UserTaskRepository;
-import com.tasktracker.backend.security.service.JwtService;
 import lombok.RequiredArgsConstructor;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
@@ -22,35 +20,33 @@ import java.util.List;
 public class UserTaskServiceImpl implements UserTaskService {
 
     private final UserTaskRepository userTaskRepository;
-    private final JwtService jwtService;
     private final UserTaskMapper mapper;
 
     @Override
-    public List<UserTaskResponse> getTasksForCurrentUser(Jwt jwt) {
-        List<UserTask> userTasks = userTaskRepository.findTasksByUserId(jwtService.extractUserId(jwt));
+    public List<UserTaskResponse> getTasksForCurrentUser(long userId) {
+        List<UserTask> userTasks = userTaskRepository.findTasksByUserId(userId);
         return userTasks.stream().map(mapper::toDto).toList();
     }
 
     @Override
-    public UserTaskResponse addTask(UserTaskCreateRequest request, Jwt jwt) {
-        UserTask userTask = createNewUserTask(request, jwt);
-        userTask = userTaskRepository.save(userTask);
+    public UserTaskResponse addTask(UserTaskCreateRequest request, long userId) {
+        UserTask userTask = createNewUserTask(request, userId);
+        userTaskRepository.save(userTask);
         return mapper.toDto(userTask);
     }
 
-    private UserTask createNewUserTask(UserTaskCreateRequest request, Jwt jwt) {
+    private UserTask createNewUserTask(UserTaskCreateRequest request, long userId) {
         UserTask userTask = mapper.toEntity(request);
-        long currentUserId = jwtService.extractUserId(jwt);
-        userTask.setUser(new User(currentUserId));
+        userTask.setUser(new User(userId));
         userTask.setCreatedAt(Instant.now());
         userTask.setCompleted(false);
         return userTask;
     }
 
     @Override
-    public UserTaskResponse updateTask(long taskId, UserTaskUpdateRequest request, Jwt jwt) {
+    public UserTaskResponse updateTask(long taskId, UserTaskUpdateRequest request, long userId) {
         UserTask userTask = findTaskById(taskId);
-        verifyTaskOwnership(userTask, jwt);
+        verifyTaskOwnership(userTask, userId);
         updateTaskFromRequest(userTask, request);
         userTask = userTaskRepository.save(userTask);
         return mapper.toDto(userTask);
@@ -61,10 +57,9 @@ public class UserTaskServiceImpl implements UserTaskService {
                 .orElseThrow(TaskNotFoundException::new);
     }
 
-    private void verifyTaskOwnership(UserTask userTask, Jwt jwt) {
-        long currentUserId = jwtService.extractUserId(jwt);
+    private void verifyTaskOwnership(UserTask userTask, long userId) {
         long taskOwnerId = userTask.getUser().getId();
-        if (taskOwnerId != currentUserId) {
+        if (taskOwnerId != userId) {
             throw new TaskOwnershipException();
         }
     }
@@ -78,16 +73,16 @@ public class UserTaskServiceImpl implements UserTaskService {
     }
 
     @Override
-    public void deleteTask(long taskId, Jwt jwt) {
+    public void deleteTask(long taskId, long userId) {
         UserTask userTask = findTaskById(taskId);
-        verifyTaskOwnership(userTask, jwt);
+        verifyTaskOwnership(userTask, userId);
         userTaskRepository.delete(userTask);
     }
 
     @Override
-    public UserTaskResponse getTask(long taskId, Jwt jwt) {
+    public UserTaskResponse getTask(long taskId, long userId) {
         UserTask userTask = findTaskById(taskId);
-        verifyTaskOwnership(userTask, jwt);
+        verifyTaskOwnership(userTask, userId);
         return mapper.toDto(userTask);
     }
 }

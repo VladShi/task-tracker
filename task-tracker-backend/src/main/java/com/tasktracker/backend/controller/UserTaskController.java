@@ -3,12 +3,11 @@ package com.tasktracker.backend.controller;
 import com.tasktracker.backend.dto.UserTaskCreateRequest;
 import com.tasktracker.backend.dto.UserTaskResponse;
 import com.tasktracker.backend.dto.UserTaskUpdateRequest;
+import com.tasktracker.backend.security.annotation.PrincipalId;
 import com.tasktracker.backend.service.UserTaskService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.security.oauth2.jwt.Jwt;
 import org.springframework.web.bind.annotation.*;
 
 import java.net.URI;
@@ -22,15 +21,15 @@ public class UserTaskController {
     private final UserTaskService userTaskService;
 
     @GetMapping
-    public ResponseEntity<List<UserTaskResponse>> getTasks(@AuthenticationPrincipal Jwt jwt) {
-        List<UserTaskResponse> tasks = userTaskService.getTasksForCurrentUser(jwt);
+    public ResponseEntity<List<UserTaskResponse>> getTasks(@PrincipalId long userId) {
+        List<UserTaskResponse> tasks = userTaskService.getTasksForCurrentUser(userId);
         return ResponseEntity.ok(tasks);
     }
 
     @PostMapping
     public ResponseEntity<UserTaskResponse> createTask(@Valid @RequestBody UserTaskCreateRequest request,
-                                                       @AuthenticationPrincipal Jwt jwt) {
-        UserTaskResponse response = userTaskService.addTask(request, jwt);
+                                                       @PrincipalId long userId) {
+        UserTaskResponse response = userTaskService.addTask(request, userId);
         URI uri = URI.create("/tasks/%d".formatted(response.id()));
         return ResponseEntity.created(uri).body(response);
     }
@@ -38,22 +37,22 @@ public class UserTaskController {
     @PatchMapping("/{taskId}")
     public ResponseEntity<UserTaskResponse> updateTask(@PathVariable("taskId") long taskId,
                                                        @Valid @RequestBody UserTaskUpdateRequest request,
-                                                       @AuthenticationPrincipal Jwt jwt) {
-        UserTaskResponse response = userTaskService.updateTask(taskId, request, jwt);
+                                                       @PrincipalId long userId) {
+        UserTaskResponse response = userTaskService.updateTask(taskId, request, userId);
         return ResponseEntity.ok(response);
     }
 
     @DeleteMapping("/{taskId}")
     public ResponseEntity<String> deleteTask(@PathVariable("taskId") long taskId,
-                                             @AuthenticationPrincipal Jwt jwt) {
-        userTaskService.deleteTask(taskId, jwt);
+                                             @PrincipalId long userId) {
+        userTaskService.deleteTask(taskId, userId);
         return ResponseEntity.noContent().build();  // 204
     }
 
     @GetMapping("/{taskId}")
     public ResponseEntity<UserTaskResponse> getTask(@PathVariable("taskId") long taskId,
-                                                    @AuthenticationPrincipal Jwt jwt) {
-        UserTaskResponse response = userTaskService.getTask(taskId, jwt);
+                                                    @PrincipalId long userId) {
+        UserTaskResponse response = userTaskService.getTask(taskId, userId);
         return ResponseEntity.ok(response);
     }
 }
