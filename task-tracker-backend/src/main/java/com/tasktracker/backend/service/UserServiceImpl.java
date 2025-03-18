@@ -31,9 +31,9 @@ public class UserServiceImpl implements UserService {
         User user = userMapper.toEntity(registerRequest);
         user.setPassword(passwordEncoder.encode(user.getPassword()));
         try {
-            User savedUser = userRepository.save(user);
+            userRepository.save(user);
 
-            CustomUserDetails userDetails = new CustomUserDetails(savedUser, new ArrayList<>());
+            CustomUserDetails userDetails = new CustomUserDetails(user, new ArrayList<>());
             String token = jwtService.generateToken(userDetails);
 
             emailKafkaProducer.sendWelcomeEmail(userDetails.getUsername());
