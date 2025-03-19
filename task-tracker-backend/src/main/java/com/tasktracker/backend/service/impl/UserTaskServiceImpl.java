@@ -52,12 +52,11 @@ public class UserTaskServiceImpl implements UserTaskService {
         userTaskRepository.save(userTask);
         return taskMapper.toDto(userTask);
     }
-    // TODO что бы избавиться от двойного запроса при обновлении задачи видимо надо разделить
-    //  в контроллере и сервисе изменение статуса и изменение заголовка/описания. Тогда при обновлении
-    //  без статуса можно будет не делать предварительный запрос в бд за задачей, а сразу обновлять с условием что
-    //  совпадают оба id. При обновлении статуса не вижу пока вариантов как избавиться от предварительного запроса,
-    //  поскольку нужно знать текущий статус задачи, что бы понимать добавлять ли completedAt. Так как может придти
-    //  запрос на обновление статуса как complete, а он уже в базе complete, и тогда не нужно добавлять completedAt.
+    // TODO избавиться от двойного запроса в бд при обновлении задачи можно только если использовать особенность
+    //  postgresql с RETURNING в запросе UPDATE или используя процедуры/функции в бд. Так как UPDATE запрос в
+    //  стандартом SQL или JPQL не подразумевает возвращение измененной строки, а возвращает только количество
+    //  затронутых строк. Так что, что бы вернуть актуальные данные все равно после UPDATE пришлось бы делать SELECT,
+    //  в случае если возложить на базу логику с заполнением completed_at, вместо кода в updateTaskFromRequest.
 
     private void verifyTaskOwnership(UserTask userTask, long userId) {
         long taskOwnerId = userTask.getUser().getId();
@@ -77,8 +76,8 @@ public class UserTaskServiceImpl implements UserTaskService {
     @Override
     @Transactional
     public void delete(long taskId, long userId) {
-        int deletedCount = userTaskRepository.deleteByIdAndUserId(taskId, userId);
-        if (deletedCount == 0) {
+        int deletedRows = userTaskRepository.deleteByIdAndUserId(taskId, userId);
+        if (deletedRows == 0) {
             throw new TaskDeletingException();
         }
     }

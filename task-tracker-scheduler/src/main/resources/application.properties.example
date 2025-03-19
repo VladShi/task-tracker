@@ -10,3 +10,8 @@ spring.datasource.password=${POSTGRES_PASSWORD:password}
 # ============================================
 spring.kafka.bootstrap-servers=${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
 spring.kafka.topic.email-sending=${KAFKA_TOPIC_EMAIL_SENDING:EMAIL_SENDING_TASKS}
+
+# ============================================
+# Jpa config
+# ============================================
+spring.jpa.open-in-view=false

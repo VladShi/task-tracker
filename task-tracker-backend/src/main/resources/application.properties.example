@@ -25,9 +25,9 @@ spring.security.oauth2.resourceserver.jwt.issuer-uri=${JWT_ISSUER_URI:http://loc
 jwt.expiration-seconds=${JWT_EXPIRATION_SECONDS:1800}
 
 # ============================================
-# Other
+# Jpa config
 # ============================================
-spring.security.config.frontend.url=${FRONTEND_URL:http://localhost}
+spring.jpa.open-in-view=false
 
 # ============================================
 # Kafka
