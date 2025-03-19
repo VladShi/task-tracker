@@ -23,7 +23,7 @@ public class ReportSchedulerService {
         Instant startOfYesterday = now.minus(1, ChronoUnit.DAYS).truncatedTo(ChronoUnit.DAYS);
         Instant endOfYesterday = startOfYesterday.plus(1, ChronoUnit.DAYS).minus(1, ChronoUnit.SECONDS);
 
-        taskReportService.sendTaskReportEmails(startOfYesterday, endOfYesterday);
+        taskReportService.sendEmailsForPeriod(startOfYesterday, endOfYesterday);
         log.info("Finished daily report generation");
     }
 }

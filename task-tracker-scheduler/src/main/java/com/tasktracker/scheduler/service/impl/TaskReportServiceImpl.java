@@ -24,7 +24,7 @@ public class TaskReportServiceImpl implements TaskReportService {
     private final EmailKafkaProducer emailKafkaProducer;
 
     @Override
-    public void sendTaskReportEmails(Instant start, Instant end) {
+    public void sendEmailsForPeriod(Instant start, Instant end) {
 
         int pageNumber = 0;
         Slice<User> usersReceivingTaskReportSlice;
