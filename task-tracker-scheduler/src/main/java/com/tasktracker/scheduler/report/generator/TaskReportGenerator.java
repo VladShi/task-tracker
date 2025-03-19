@@ -1,8 +1,10 @@
-package com.tasktracker.scheduler.report;
+package com.tasktracker.scheduler.report.generator;
 
 import com.tasktracker.scheduler.dto.EmailSendingRequest;
 import com.tasktracker.scheduler.entity.User;
 import com.tasktracker.scheduler.entity.UserTask;
+import com.tasktracker.scheduler.report.ReportGenerator;
+import org.springframework.stereotype.Service;
 
 import java.time.Instant;
 import java.util.ArrayList;
@@ -11,12 +13,14 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 
-public class TaskReportGenerator {
+@Service
+public class TaskReportGenerator implements ReportGenerator {
 
     private static final int TASK_LIMIT = 5;
     private static final String TASK_REPORT_TYPE = "TASK_REPORT";
 
-    public static EmailSendingRequest generateForUserInPeriod(User user, Instant start, Instant end) {
+    @Override
+    public EmailSendingRequest generateForUserInPeriod(User user, Instant start, Instant end) {
         List<UserTask> uncompletedTasks = new ArrayList<>();
         List<UserTask> completedTasks = new ArrayList<>();
         categorizeTasks(user.getTasks(), uncompletedTasks, completedTasks, start, end);
@@ -24,7 +28,7 @@ public class TaskReportGenerator {
         return generateRequest(user.getUsername(), uncompletedTasks, completedTasks);
     }
 
-    private static void categorizeTasks(List<UserTask> tasks, List<UserTask> uncompletedTasks,
+    private void categorizeTasks(List<UserTask> tasks, List<UserTask> uncompletedTasks,
                                  List<UserTask> completedTasks, Instant start, Instant end) {
         for (UserTask task : tasks) {
             if (!task.isCompleted()) {
@@ -35,9 +39,9 @@ public class TaskReportGenerator {
         }
     }
 
-    private static EmailSendingRequest generateRequest(String email,
-                                                       List<UserTask> uncompletedTasks,
-                                                       List<UserTask> completedTasks) {
+    private EmailSendingRequest generateRequest(String email,
+                                                List<UserTask> uncompletedTasks,
+                                                List<UserTask> completedTasks) {
         Map<String, String> params = new HashMap<>();
         params.put("subject", generateSubject(completedTasks.size(), uncompletedTasks.size()));
         if (!uncompletedTasks.isEmpty()) {
@@ -49,14 +53,14 @@ public class TaskReportGenerator {
         return new EmailSendingRequest(email, TASK_REPORT_TYPE, params);
     }
 
-    private static String getFormattedTasksTitles(List<UserTask> tasks) {
+    private String getFormattedTasksTitles(List<UserTask> tasks) {
         return tasks.stream()
                 .limit(TASK_LIMIT)
                 .map(UserTask::getTitle)
                 .collect(Collectors.joining("\n"));
     }
 
-    private static String generateSubject(int completedTasksNumber, int uncompletedTasksNumber) {
+    private String generateSubject(int completedTasksNumber, int uncompletedTasksNumber) {
         if (uncompletedTasksNumber != 0 && completedTasksNumber != 0) {
             return "Yesterday you completed %d tasks, with %d tasks remaining unfinished"
                     .formatted(completedTasksNumber, uncompletedTasksNumber);

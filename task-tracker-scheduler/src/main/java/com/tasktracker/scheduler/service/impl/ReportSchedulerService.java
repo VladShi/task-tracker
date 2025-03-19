@@ -1,6 +1,7 @@
 package com.tasktracker.scheduler.service.impl;
 
-import com.tasktracker.scheduler.service.TaskReportService;
+import com.tasktracker.scheduler.report.generator.TaskReportGenerator;
+import com.tasktracker.scheduler.service.EmailSendingService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.scheduling.annotation.Scheduled;
@@ -14,7 +15,8 @@ import java.time.temporal.ChronoUnit;
 @RequiredArgsConstructor
 public class ReportSchedulerService {
 
-    private final TaskReportService taskReportService;
+    private final EmailSendingService emailSendingService;
+    private final TaskReportGenerator taskReportGenerator;
 
     @Scheduled(cron = "0 0 0 * * *")
     public void generateDailyReports() {
@@ -23,7 +25,7 @@ public class ReportSchedulerService {
         Instant startOfYesterday = now.minus(1, ChronoUnit.DAYS).truncatedTo(ChronoUnit.DAYS);
         Instant endOfYesterday = startOfYesterday.plus(1, ChronoUnit.DAYS).minus(1, ChronoUnit.SECONDS);
 
-        taskReportService.sendEmailsForPeriod(startOfYesterday, endOfYesterday);
+        emailSendingService.sendEmailsForPeriod(startOfYesterday, endOfYesterday, taskReportGenerator);
         log.info("Finished daily report generation");
     }
 }
