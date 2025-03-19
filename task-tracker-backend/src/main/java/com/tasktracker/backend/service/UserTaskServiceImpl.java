@@ -27,7 +27,7 @@ public class UserTaskServiceImpl implements UserTaskService {
     @Override
     public List<UserTaskResponse> findAllByUserId(long userId) {
         List<UserTask> userTasks = userTaskRepository.findTasksByUserId(userId);
-        return userTasks.stream().map(taskMapper::toDto).toList();
+        return taskMapper.toDto(userTasks);
     }
 
     @Override
@@ -51,9 +51,12 @@ public class UserTaskServiceImpl implements UserTaskService {
         userTaskRepository.save(userTask);
         return taskMapper.toDto(userTask);
     }
-    // TODO что бы избавить от двойного запроса при обновлении задачи видимо надо разделить
-    //  в контроллере и сервисе изменение статуса и изменение заголовка/описания.
-    //  Скорее всего тогда отпадет и необходимость запрашивать статус перед его изменением.
+    // TODO что бы избавиться от двойного запроса при обновлении задачи видимо надо разделить
+    //  в контроллере и сервисе изменение статуса и изменение заголовка/описания. Тогда при обновлении
+    //  без статуса можно будет не делать предварительный запрос в бд за задачей, а сразу обновлять с условием что
+    //  совпадают оба id. При обновлении статуса не вижу пока вариантов как избавиться от предварительного запроса,
+    //  поскольку нужно знать текущий статус задачи, что бы понимать добавлять ли completedAt. Так как может придти
+    //  запрос на обновление статуса как complete, а он уже в базе complete, и тогда не нужно добавлять completedAt.
 
     private void verifyTaskOwnership(UserTask userTask, long userId) {
         long taskOwnerId = userTask.getUser().getId();

@@ -8,6 +8,8 @@ import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
 import org.mapstruct.MappingTarget;
 
+import java.util.List;
+
 @Mapper(componentModel = "spring")
 public interface UserTaskMapper {
 
@@ -25,4 +27,6 @@ public interface UserTaskMapper {
     void updateEntity(UserTaskUpdateRequest request, @MappingTarget UserTask userTask);
 
     UserTaskResponse toDto(UserTask userTask);
+
+    List<UserTaskResponse> toDto(List<UserTask> userTasks);
 }
