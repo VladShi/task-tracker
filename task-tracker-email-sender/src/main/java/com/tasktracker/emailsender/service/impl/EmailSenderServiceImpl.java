@@ -36,11 +36,12 @@ public class EmailSenderServiceImpl implements EmailSenderService {
     public void send(EmailSendingRequest request) throws Exception {
         EmailMessage email = emailCreationService.create(request);
         log.info("Created email: to={}, subject={}", email.getTo(), email.getSubject());
-        sendEmail(email);
+        MimeMessage mimeMessage = convertToMimeMessage(email);
+        mailSender.send(mimeMessage);
         log.info("Email sent successfully to {}", email.getTo());
     }
 
-    private void sendEmail(EmailMessage email) throws MessagingException {
+    private MimeMessage convertToMimeMessage(EmailMessage email) throws MessagingException {
         MimeMessage mimeMessage = mailSender.createMimeMessage();
         MimeMessageHelper helper = new MimeMessageHelper(mimeMessage, true, "UTF-8");
 
@@ -49,6 +50,6 @@ public class EmailSenderServiceImpl implements EmailSenderService {
         helper.setText(email.getHtmlContent(), true);
         helper.setFrom(fromAddress);
 
-        mailSender.send(mimeMessage);
+        return mimeMessage;
     }
 }
