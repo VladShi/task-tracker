@@ -1,6 +1,6 @@
 package com.tasktracker.backend.kafka;
 
-import com.tasktracker.backend.dto.EmailSendingRequest;
+import com.tasktracker.backend.dto.request.EmailSendingRequest;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;

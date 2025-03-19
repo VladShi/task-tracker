@@ -1,8 +1,8 @@
 package com.tasktracker.backend.service;
 
-import com.tasktracker.backend.dto.UserTaskCreateRequest;
-import com.tasktracker.backend.dto.UserTaskResponse;
-import com.tasktracker.backend.dto.UserTaskUpdateRequest;
+import com.tasktracker.backend.dto.request.UserTaskCreateRequest;
+import com.tasktracker.backend.dto.response.UserTaskResponse;
+import com.tasktracker.backend.dto.request.UserTaskUpdateRequest;
 
 import java.util.List;
 

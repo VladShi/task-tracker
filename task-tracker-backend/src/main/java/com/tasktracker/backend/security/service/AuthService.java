@@ -1,6 +1,6 @@
 package com.tasktracker.backend.security.service;
 
-import com.tasktracker.backend.dto.LoginRequest;
+import com.tasktracker.backend.dto.request.LoginRequest;
 
 public interface AuthService {
 

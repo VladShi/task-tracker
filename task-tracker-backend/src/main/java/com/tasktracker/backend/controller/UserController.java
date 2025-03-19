@@ -1,7 +1,7 @@
 package com.tasktracker.backend.controller;
 
-import com.tasktracker.backend.dto.UserInfoResponse;
-import com.tasktracker.backend.dto.RegisterRequest;
+import com.tasktracker.backend.dto.response.UserInfoResponse;
+import com.tasktracker.backend.dto.request.RegisterRequest;
 import com.tasktracker.backend.entity.User;
 import com.tasktracker.backend.security.service.JwtService;
 import com.tasktracker.backend.service.UserService;

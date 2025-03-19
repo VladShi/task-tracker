@@ -1,6 +1,6 @@
 package com.tasktracker.backend.kafka.config;
 
-import com.tasktracker.backend.dto.EmailSendingRequest;
+import com.tasktracker.backend.dto.request.EmailSendingRequest;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Value;

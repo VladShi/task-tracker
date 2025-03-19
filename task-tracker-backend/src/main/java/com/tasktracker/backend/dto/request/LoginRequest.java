@@ -1,4 +1,4 @@
-package com.tasktracker.backend.dto;
+package com.tasktracker.backend.dto.request;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotNull;

@@ -1,6 +1,6 @@
 package com.tasktracker.backend.controller;
 
-import com.tasktracker.backend.dto.LoginRequest;
+import com.tasktracker.backend.dto.request.LoginRequest;
 import com.tasktracker.backend.security.service.AuthService;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;

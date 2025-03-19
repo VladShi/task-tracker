@@ -1,4 +1,4 @@
-package com.tasktracker.backend.dto;
+package com.tasktracker.backend.dto.response;
 
 import java.time.Instant;
 

@@ -1,8 +1,8 @@
 package com.tasktracker.backend.mapper;
 
-import com.tasktracker.backend.dto.UserTaskCreateRequest;
-import com.tasktracker.backend.dto.UserTaskResponse;
-import com.tasktracker.backend.dto.UserTaskUpdateRequest;
+import com.tasktracker.backend.dto.request.UserTaskCreateRequest;
+import com.tasktracker.backend.dto.response.UserTaskResponse;
+import com.tasktracker.backend.dto.request.UserTaskUpdateRequest;
 import com.tasktracker.backend.entity.UserTask;
 import org.mapstruct.Mapper;
 import org.mapstruct.Mapping;
