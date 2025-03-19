@@ -25,10 +25,11 @@ public class EmailCreationServiceImpl implements EmailCreationService {
     public EmailMessage create(EmailSendingRequest request) {
         EmailType emailType = EmailType.fromString(request.type());
         Map<String, String> params = request.params();
+        String subject = params.getOrDefault("subject", emailType.getDefaultSubject());
 
         return EmailMessage.builder()
                 .to(request.to())
-                .subject(getSubject(emailType, params))
+                .subject(subject)
                 .htmlContent(renderTemplate(emailType, params))
                 .build();
     }
@@ -37,9 +38,5 @@ public class EmailCreationServiceImpl implements EmailCreationService {
         Context context = new Context();
         params.forEach(context::setVariable);
         return templateEngine.process(emailType.getTemplateName(), context);
-    }
-
-    private String getSubject(EmailType emailType, Map<String, String> params) {
-        return params.getOrDefault("subject", emailType.getDefaultSubject());
     }
 }
