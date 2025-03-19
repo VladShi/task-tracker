@@ -1,10 +1,11 @@
-package com.tasktracker.backend.service;
+package com.tasktracker.backend.service.impl;
 
 import com.tasktracker.backend.dto.request.RegisterRequest;
 import com.tasktracker.backend.entity.User;
 import com.tasktracker.backend.exception.UsernameAlreadyTakenException;
 import com.tasktracker.backend.mapper.UserMapper;
 import com.tasktracker.backend.repository.UserRepository;
+import com.tasktracker.backend.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.hibernate.exception.ConstraintViolationException;
 import org.springframework.dao.DataIntegrityViolationException;

@@ -1,4 +1,4 @@
-package com.tasktracker.backend.security.service;
+package com.tasktracker.backend.security.service.impl;
 
 import com.tasktracker.backend.entity.User;
 import com.tasktracker.backend.repository.UserRepository;

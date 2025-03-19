@@ -1,4 +1,4 @@
-package com.tasktracker.backend.service;
+package com.tasktracker.backend.service.impl;
 
 import com.tasktracker.backend.dto.request.UserTaskCreateRequest;
 import com.tasktracker.backend.dto.response.UserTaskResponse;
@@ -10,6 +10,7 @@ import com.tasktracker.backend.exception.TaskNotFoundException;
 import com.tasktracker.backend.exception.TaskOwnershipException;
 import com.tasktracker.backend.mapper.UserTaskMapper;
 import com.tasktracker.backend.repository.UserTaskRepository;
+import com.tasktracker.backend.service.UserTaskService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;

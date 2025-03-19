@@ -1,8 +1,9 @@
-package com.tasktracker.backend.security.service;
+package com.tasktracker.backend.security.service.impl;
 
 import com.tasktracker.backend.entity.User;
 import com.tasktracker.backend.exception.JwtProcessingException;
 import com.tasktracker.backend.security.model.CustomUserDetails;
+import com.tasktracker.backend.security.service.JwtService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.oauth2.jwt.Jwt;
