@@ -1,7 +1,9 @@
 package com.tasktracker.backend.security.handler;
 
 import com.tasktracker.backend.security.annotation.PrincipalId;
+import com.tasktracker.backend.security.service.JwtService;
 import jakarta.annotation.Nonnull;
+import lombok.RequiredArgsConstructor;
 import org.springframework.core.MethodParameter;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -13,9 +15,10 @@ import org.springframework.web.method.support.HandlerMethodArgumentResolver;
 import org.springframework.web.method.support.ModelAndViewContainer;
 
 @Component
+@RequiredArgsConstructor
 public class PrincipalIdArgumentResolver implements HandlerMethodArgumentResolver {
 
-    public static final String USER_ID_CLAIM = "userId";
+    private final JwtService jwtService;
 
     @Override
     public boolean supportsParameter(MethodParameter parameter) {
@@ -34,6 +37,6 @@ public class PrincipalIdArgumentResolver implements HandlerMethodArgumentResolve
             throw new IllegalStateException("JWT token is missing or invalid");
         }
 
-        return jwt.getClaim(USER_ID_CLAIM);
+        return jwtService.extractUserId(jwt);
     }
 }
